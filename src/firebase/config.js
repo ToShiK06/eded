@@ -3,12 +3,12 @@ import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyCf2gqDW-4S5ynpAm3lOUOZQnNsCu5g__A',
-	authDomain: 'korka-8194d.firebaseapp.com',
-	projectId: 'korka-8194d',
-	storageBucket: 'korka-8194d.firebasestorage.app',
-	messagingSenderId: '550032729000',
-	appId: '1:550032729000:web:1ec174ffdb2ce7222b739d',
+	 apiKey: "AIzaSyCSelopBtoZjlfnTIqHF1eSaXdj-NdDXt0",
+  authDomain: "danyaos4.firebaseapp.com",
+  projectId: "danyaos4",
+  storageBucket: "danyaos4.firebasestorage.app",
+  messagingSenderId: "1011898454972",
+  appId: "1:1011898454972:web:5b113662d683a04c7811b9"
 }
 
 const app = initializeApp(firebaseConfig)

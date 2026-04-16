@@ -3,136 +3,112 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const FooterContainer = styled.footer`
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-  border-top: 1px solid rgba(99, 102, 241, 0.1);
-  padding: 4rem 2rem 2rem;
+  background: #FFFFFF;
+  border-top: 1px solid #D5CDC0;
+  padding: 60px 24px 30px;
   position: relative;
-  overflow: hidden;
-  z-index: 2;
 `;
 
 const FooterContent = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 3rem;
+  gap: 40px;
 
   @media (max-width: 968px) {
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: 30px;
   }
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 30px;
   }
 `;
 
 const FooterSection = styled.div`
   h3 {
-    color: white;
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
+    color: #1A1A1A;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
     position: relative;
     
     &::after {
       content: '';
       position: absolute;
-      bottom: -0.5rem;
+      bottom: -8px;
       left: 0;
-      width: 40px;
-      height: 2px;
-      background: linear-gradient(90deg, #6366F1, transparent);
+      width: 30px;
+      height: 1px;
+      background: #2A2A2A;
     }
   }
   
   p {
-    color: #a0a0a0;
+    color: #4A4A4A;
     line-height: 1.6;
-    margin-bottom: 1.5rem;
+    margin-bottom: 20px;
+    font-size: 14px;
   }
 `;
 
 const FooterLinks = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 10px;
   
   a {
-    color: #a0a0a0;
+    color: #4A4A4A;
     text-decoration: none;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    font-size: 14px;
     
     &:hover {
-      color: #6366F1;
-      transform: translateX(5px);
+      color: #2A2A2A;
     }
   }
 `;
-
-
 
 const ContactInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 12px;
   
   .contact-item {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
-    color: #a0a0a0;
-    
-    .icon {
-      font-size: 1.2rem;
-      color: #6366F1;
-    }
+    gap: 12px;
+    color: #4A4A4A;
+    font-size: 14px;
   }
 `;
 
 const Copyright = styled.div`
-  max-width: 1200px;
-  margin: 3rem auto 0;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 1400px;
+  margin: 40px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid #D5CDC0;
   text-align: center;
-  color: #666;
-  font-size: 0.9rem;
+  color: #808080;
+  font-size: 12px;
+  letter-spacing: 0.5px;
 `;
 
 const Logo = styled(Link)`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  display: inline-block;
   text-decoration: none;
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
 `;
 
-
-
 const LogoText = styled.div`
-  display: flex;
-  flex-direction: column;
-  
   .main {
-    font-size: 1.5rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #6366F1 0%, #FFFFFF 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .subtitle {
-    font-size: 0.6rem;
-    color: #a0a0a0;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: 500;
+    color: #1A1A1A;
+    letter-spacing: -0.02em;
   }
 `;
 
@@ -176,18 +152,10 @@ const Footer = () => {
         <FooterSection>
           <h3>Контакты</h3>
           <ContactInfo>
-            <div className="contact-item">
-              <span>info@korochki.est</span>
-            </div>
-            <div className="contact-item">
-              <span>1 (123) 555-55-55</span>
-            </div>
-            <div className="contact-item">
-              <span>Великий Ногвород</span>
-            </div>
-            <div className="contact-item">
-              <span>Пн-Пт: 9:00-18:00</span>
-            </div>
+            <div className="contact-item">info@korochki.est</div>
+            <div className="contact-item">+7 (123) 555-55-55</div>
+            <div className="contact-item">Великий Новгород</div>
+            <div className="contact-item">Пн-Пт: 9:00-18:00</div>
           </ContactInfo>
         </FooterSection>
       </FooterContent>

@@ -1,242 +1,128 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-
-
-const particleFloat = keyframes`
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(10px, -15px) rotate(90deg); }
-  50% { transform: translate(-5px, -25px) rotate(180deg); }
-  75% { transform: translate(-15px, -10px) rotate(270deg); }
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 `;
-
-
-const slideUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-
-const ParticlesBackground = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-`;
-
-const Particle = styled.div`
-  position: fixed;
-  width: ${props => props.size || '4px'};
-  height: ${props => props.size || '4px'};
-  background: rgba(99, 102, 241, ${props => props.opacity || '0.6'});
-  border-radius: 50%;
-  animation: ${particleFloat} ${props => props.duration || '20s'} linear infinite;
-  top: ${props => props.top}%;
-  left: ${props => props.left}%;
-  animation-delay: ${props => props.delay || '0s'};
-`;
-
 
 const ContactsContainer = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
-  padding: 2rem;
-  padding-top: 100px;
-
-  @media (max-width: 968px) {
-    padding-top: 80px;
-  }
+  background: #F5F0E8;
+  padding: 100px 24px 60px;
 `;
 
+const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+
+// Хедер с двумя колонками
 const PageHeader = styled.div`
-  text-align: center;
-  margin-bottom: 4rem;
-  animation: ${slideUp} 0.8s ease-out;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 60px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #D5CDC0;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
   
   h1 {
-    font-size: 3.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 48px;
+    font-weight: 500;
+    color: #1A1A1A;
+    letter-spacing: -0.02em;
   }
   
   p {
-    font-size: 1.3rem;
-    color: #a0a0a0;
-    max-width: 600px;
-    margin: 0 auto;
+    font-size: 18px;
+    color: #4A4A4A;
+    line-height: 1.6;
+    align-self: flex-end;
+    
+    @media (max-width: 768px) {
+      align-self: flex-start;
+    }
   }
 `;
 
+// Форма и контакты поменялись местами
 const ContentGrid = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  margin-bottom: 4rem;
+  gap: 60px;
+  margin-bottom: 80px;
 
   @media (max-width: 968px) {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 50px;
   }
 `;
 
+// Форма теперь слева
+const ContactForm = styled.form`
+  background: #FFFFFF;
+  border: 1px solid #D5CDC0;
+  padding: 40px;
+  order: 1;
+`;
+
+// Контакты справа
 const ContactInfo = styled.div`
-  animation: ${slideUp} 0.8s ease-out 0.2s both;
-  position: relative;
-  z-index: 2;
+  order: 2;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  color: white;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 30px;
+  color: #1A1A1A;
+  letter-spacing: -0.01em;
   position: relative;
+  display: inline-block;
   
   &::after {
     content: '';
     position: absolute;
-    bottom: -0.5rem;
+    bottom: -10px;
     left: 0;
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, #6366F1, transparent);
+    width: 40px;
+    height: 2px;
+    background: #2A2A2A;
   }
-`;
-
-const ContactList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-`;
-
-const ContactItem = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-  animation: ${slideUp} 0.8s ease-out ${props => props.delay || '0s'} both;
-  
-  &:hover {
-    transform: translateY(-5px);
-    border-color: rgba(99, 102, 241, 0.3);
-  }
-  
-  .icon {
-    font-size: 1.5rem;
-    color: #6366F1;
-    min-width: 40px;
-  }
-  
-  .content {
-    flex: 1;
-    
-    h3 {
-      color: white;
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    
-    p {
-      color: #a0a0a0;
-      margin-bottom: 0.25rem;
-    }
-    
-    a {
-      color: #6366F1;
-      text-decoration: none;
-      transition: color 0.3s ease;
-      
-      &:hover {
-        color: #8B5CF6;
-      }
-    }
-  }
-`;
-
-const ContactForm = styled.form`
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  padding: 2.5rem;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  animation: ${slideUp} 0.8s ease-out 0.4s both;
-  position: relative;
-  z-index: 2;
 `;
 
 const FormGroup = styled.div`
-  margin-bottom: 1.5rem;
+  margin-bottom: 24px;
   
   label {
     display: block;
-    color: white;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+    color: #1A1A1A;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 14px;
   }
   
   input, textarea, select {
     width: 100%;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: white;
-    font-size: 1rem;
+    padding: 14px 16px;
+    background: #F5F0E8;
+    border: 1px solid #D5CDC0;
+    color: #1A1A1A;
+    font-size: 14px;
     transition: all 0.3s ease;
     
     &::placeholder {
-      color: #666;
+      color: #808080;
     }
     
     &:focus {
       outline: none;
-      border-color: #6366F1;
-      background: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
-    }
-  }
-  
-  select {
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366F1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1em;
-    
-    option {
-      background: #1a1a1a;
-      color: white;
-      padding: 1rem;
-      
-      &:checked {
-        background: #6366F1;
-        color: white;
-      }
-      
-      &:hover {
-        background: #6366F1;
-      }
+      border-color: #2A2A2A;
     }
   }
   
@@ -249,180 +135,163 @@ const FormGroup = styled.div`
 
 const SubmitButton = styled.button`
   width: 100%;
-  padding: 1.2rem;
-  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  padding: 16px;
+  background: #2A2A2A;
   border: none;
-  border-radius: 12px;
-  color: white;
-  font-weight: 700;
-  font-size: 1.1rem;
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.5px;
   transition: all 0.3s ease;
+  cursor: pointer;
   
   &:hover {
+    background: #1A1A1A;
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
   }
   
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
     transform: none;
   }
 `;
 
 const SuccessMessage = styled.div`
-  background: rgba(16, 185, 129, 0.2);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  color: #10B981;
-  padding: 1rem;
-  border-radius: 10px;
+  background: rgba(42, 42, 42, 0.05);
+  border: 1px solid rgba(42, 42, 42, 0.2);
+  color: #2A2A2A;
+  padding: 16px;
   text-align: center;
-  margin-top: 1rem;
-  animation: ${slideUp} 0.5s ease-out;
+  margin-top: 20px;
+  font-size: 14px;
 `;
 
-const MapSection = styled.div`
-  max-width: 1200px;
-  margin: 0 auto 4rem;
-  animation: ${slideUp} 0.8s ease-out 0.6s both;
-`;
-
-const MapPlaceholder = styled.div`
-  height: 400px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
+const ContactList = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #a0a0a0;
-  font-size: 1.2rem;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-direction: column;
+  gap: 24px;
+`;
+
+const ContactItem = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px;
+  background: #FFFFFF;
+  border: 1px solid #D5CDC0;
+  transition: all 0.3s ease;
   
-  .map-content {
-    text-align: center;
+  &:hover {
+    border-color: #2A2A2A;
+  }
+  
+  .content {
+    flex: 1;
     
-    .icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      opacity: 0.5;
+    h3 {
+      color: #1A1A1A;
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    
+    p {
+      color: #4A4A4A;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    
+    a {
+      color: #2A2A2A;
+      transition: color 0.3s ease;
+      
+      &:hover {
+        color: #1A1A1A;
+      }
     }
   }
 `;
 
-const FAQSection = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  animation: ${slideUp} 0.8s ease-out 0.8s both;
+// Карта теперь внизу, но в другой компоновке
+const MapSection = styled.div`
+  margin: 80px 0;
 `;
 
-const FAQGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 1.5rem;
+const MapTitle = styled.h2`
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 30px;
+  color: #1A1A1A;
+`;
+
+const MapPlaceholder = styled.div`
+  height: 300px;
+  background: #FFFFFF;
+  border: 1px solid #D5CDC0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4A4A4A;
+  font-size: 14px;
+`;
+
+// FAQ в аккордеон вместо сетки
+const FAQSection = styled.div`
+  margin-top: 80px;
+`;
+
+const FAQTitle = styled.h2`
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 30px;
+  color: #1A1A1A;
 `;
 
 const FAQItem = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  padding: 1.5rem;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  background: #FFFFFF;
+  border: 1px solid #D5CDC0;
+  margin-bottom: 16px;
   
-  &:hover {
-    transform: translateY(-5px);
-    border-color: rgba(99, 102, 241, 0.3);
-  }
-  
-  h3 {
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-  }
-  
-  p {
-    color: #a0a0a0;
-    line-height: 1.6;
+  &:last-child {
+    margin-bottom: 0;
   }
 `;
 
-const PhoneInput = ({ value, onChange, ...props }) => {
-  const formatPhoneNumber = (value) => {
-    const numbers = value.replace(/\D/g, '');
-    
-    if (numbers.length === 0) return '';
-    if (numbers.length <= 1) return `+7 (${numbers}`;
-    if (numbers.length <= 4) return `+7 (${numbers.slice(1, 4)}`;
-    if (numbers.length <= 7) return `+7 (${numbers.slice(1, 4)}) ${numbers.slice(4, 7)}`;
-    if (numbers.length <= 9) return `+7 (${numbers.slice(1, 4)}) ${numbers.slice(4, 7)}-${numbers.slice(7, 9)}`;
-    return `+7 (${numbers.slice(1, 4)}) ${numbers.slice(4, 7)}-${numbers.slice(7, 9)}-${numbers.slice(9, 11)}`;
-  };
-
-  const handleChange = (e) => {
-    const formattedValue = formatPhoneNumber(e.target.value);
-    onChange({
-      ...e,
-      target: {
-        ...e.target,
-        value: formattedValue
-      }
-    });
-  };
-
-  return (
-    <input
-      type="tel"
-      value={value}
-      onChange={handleChange}
-      placeholder="+7 (___) ___-__-__"
-      {...props}
-    />
-  );
-};
-
-const CustomSelect = ({ value, onChange, children, ...props }) => {
-  const handleChange = (e) => {
-    onChange(e);
-    e.target.blur();
-  };
-
-  return (
-    <select value={value} onChange={handleChange} {...props}>
-      {children}
-    </select>
-  );
-};
-
-
-
-const generateParticles = () => {
-  const particles = [];
-  for (let i = 0; i < 40; i++) {
-    particles.push({
-      id: i,
-      top: Math.random() * 100,
-      left: Math.random() * 100,
-      size: `${Math.random() * 3 + 2}px`,
-      opacity: Math.random() * 0.4 + 0.3,
-      duration: `${Math.random() * 15 + 10}s`,
-      delay: `${Math.random() * 5}s`
-    });
-  }
-  return particles;
-};
-const Particles = React.memo(() => {
-  const particles = useMemo(() => generateParticles(), []);
+const FAQQuestion = styled.button`
+  width: 100%;
+  padding: 20px 24px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1A1A1A;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
   
-  return (
-    <ParticlesBackground>
-      {particles.map(particle => (
-        <Particle key={particle.id} {...particle} />
-      ))}
-    </ParticlesBackground>
-  );
-});
+  &:hover {
+    background: #EDE5DB;
+  }
+  
+  .arrow {
+    transition: transform 0.3s ease;
+    transform: ${props => props.$open ? 'rotate(180deg)' : 'rotate(0deg)'};
+  }
+`;
+
+const FAQAnswer = styled.div`
+  padding: ${props => props.$open ? '0 24px 24px 24px' : '0 24px'};
+  max-height: ${props => props.$open ? '200px' : '0'};
+  overflow: hidden;
+  transition: all 0.3s ease;
+  color: #4A4A4A;
+  font-size: 14px;
+  line-height: 1.6;
+`;
 
 const Contacts = () => {
   const [formData, setFormData] = useState({
@@ -434,6 +303,7 @@ const Contacts = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [openFaq, setOpenFaq] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -442,18 +312,11 @@ const Contacts = () => {
     });
   };
 
-  const handlePhoneChange = (e) => {
-    setFormData({
-      ...formData,
-      phone: e.target.value
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 1500));
     
     setIsSubmitting(false);
     setIsSubmitted(true);
@@ -468,197 +331,155 @@ const Contacts = () => {
     setTimeout(() => setIsSubmitted(false), 5000);
   };
 
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
   const contactItems = [
-    {
-      icon: '',
-      title: 'Телефон',
-      content: ['1 (123) 555-55-55', 'Бесплатный звонок по России'],
-      delay: '0s'
-    },
-    {
-      icon: '',
-      title: 'Email',
-      content: [
-        'info@korochki.est - общие вопросы',
-        'support@korochki.est - техподдержка'
-      ],
-      delay: '0.1s'
-    },
-    {
-      icon: '',
-      title: 'Адрес',
-      content: [
-        'Великий Новгород',
-        'Бизнес'
-      ],
-      delay: '0.2s'
-    },
-    {
-      icon: '',
-      title: 'Время работы',
-      content: [
-        'Пн-Пт: 9:00 - 18:00',
-        'Сб-Вс: 10:00 - 16:00'
-      ],
-      delay: '0.3s'
-    }
+    { title: 'Телефон', content: ['+7 (123) 555-55-55', 'Бесплатный звонок по России'] },
+    { title: 'Email', content: ['info@korochki.est - общие вопросы', 'support@korochki.est - техподдержка'] },
+    { title: 'Адрес', content: ['Великий Новгород', 'Бизнес-центр'] },
+    { title: 'Время работы', content: ['Пн-Пт: 9:00 - 18:00', 'Сб-Вс: 10:00 - 16:00'] }
   ];
 
   const faqItems = [
-  {
-    question: 'Как записаться на курс?',
-    answer: 'Выберите подходящий курс на странице "Курсы", нажмите "Записаться" и следуйте инструкциям для оформления заявки.'
-  },
-  {
-    question: 'Какие документы я получу после обучения?',
-    answer: 'После успешного окончания курса вы получите удостоверение или диплом установленного образца о дополнительном профессиональном образовании.'
-  },
-  {
-    question: 'Можно ли оплатить курс в рассрочку?',
-    answer: 'Да, мы предоставляем возможность оплаты в рассрочку на большинство курсов. Подробности уточняйте у наших менеджеров.'
-  },
-  {
-    question: 'Есть ли возможность вернуть деньги?',
-    answer: 'Да, мы предоставляем возврат средств в течение 14 дней после начала курса, если обучение не подошло.'
-  },
-  {
-    question: 'Сколько длится обучение на курсах?',
-    answer: 'Продолжительность обучения зависит от выбранного курса - от 1 до 6 месяцев. Каждый курс имеет четкий учебный план и график занятий.'
-  },
-  {
-    question: 'Предоставляется ли доступ к материалам после окончания курса?',
-    answer: 'Да, после завершения обучения у вас остается пожизненный доступ ко всем материалам курса, включая видеоуроки, презентации и дополнительные ресурсы.'
-  }
-];
+    { question: 'Как записаться на курс?', answer: 'Выберите подходящий курс на странице "Курсы", нажмите "Записаться" и следуйте инструкциям для оформления заявки.' },
+    { question: 'Какие документы я получу после обучения?', answer: 'После успешного окончания курса вы получите удостоверение или диплом установленного образца о дополнительном профессиональном образовании.' },
+    { question: 'Можно ли оплатить курс в рассрочку?', answer: 'Да, мы предоставляем возможность оплаты в рассрочку на большинство курсов. Подробности уточняйте у наших менеджеров.' },
+    { question: 'Есть ли возможность вернуть деньги?', answer: 'Да, мы предоставляем возврат средств в течение 14 дней после начала курса, если обучение не подошло.' },
+    { question: 'Сколько длится обучение на курсах?', answer: 'Продолжительность обучения зависит от выбранного курса - от 1 до 6 месяцев. Каждый курс имеет четкий учебный план и график занятий.' },
+    { question: 'Предоставляется ли доступ к материалам после окончания курса?', answer: 'Да, после завершения обучения у вас остается пожизненный доступ ко всем материалам курса, включая видеоуроки, презентации и дополнительные ресурсы.' }
+  ];
 
   return (
     <ContactsContainer>
-      
-      <Particles />
-      <PageHeader>
-        <h1>Свяжитесь с нами</h1>
-        <p>Есть вопросы? Мы всегда рады помочь и ответить на все ваши вопросы</p>
-      </PageHeader>
+      <Container>
+        <PageHeader>
+          <h1>Контакты</h1>
+          <p>Есть вопросы? Мы всегда рады помочь и ответим в ближайшее время</p>
+        </PageHeader>
 
-      <ContentGrid>
-        <ContactInfo>
-          <SectionTitle>Контактная информация</SectionTitle>
-          <ContactList>
-            {contactItems.map((item, index) => (
-              <ContactItem key={index} delay={item.delay}>
-                <div className="icon">{item.icon}</div>
-                <div className="content">
-                  <h3>{item.title}</h3>
-                  {item.content.map((line, i) => (
-                    <p key={i}>{line}</p>
-                  ))}
-                </div>
-              </ContactItem>
-            ))}
-          </ContactList>
-        </ContactInfo>
+        <ContentGrid>
+          <ContactForm onSubmit={handleSubmit}>
+            <SectionTitle>Напишите нам</SectionTitle>
+            
+            <FormGroup>
+              <label htmlFor="name">Имя *</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                placeholder="Ваше имя"
+              />
+            </FormGroup>
+            
+            <FormGroup>
+              <label htmlFor="email">Email *</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                placeholder="your@email.com"
+              />
+            </FormGroup>
+            
+            <FormGroup>
+              <label htmlFor="phone">Телефон</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="+7 (___) ___-__-__"
+              />
+            </FormGroup>
+            
+            <FormGroup>
+              <label htmlFor="subject">Тема *</label>
+              <select
+                id="subject"
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+                required
+              >
+                <option value="" disabled>Выберите тему</option>
+                <option value="course">Вопрос по курсу</option>
+                <option value="payment">Оплата и документы</option>
+                <option value="technical">Техническая поддержка</option>
+                <option value="other">Другое</option>
+              </select>
+            </FormGroup>
+            
+            <FormGroup>
+              <label htmlFor="message">Сообщение *</label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+                placeholder="Расскажите о вашем вопросе..."
+              />
+            </FormGroup>
+            
+            <SubmitButton type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Отправка...' : 'Отправить сообщение'}
+            </SubmitButton>
+            
+            {isSubmitted && (
+              <SuccessMessage>
+                Спасибо! Ваше сообщение отправлено. Мы свяжемся с вами в ближайшее время.
+              </SuccessMessage>
+            )}
+          </ContactForm>
 
-        <ContactForm onSubmit={handleSubmit}>
-          <SectionTitle>Напишите нам</SectionTitle>
-          
-          <FormGroup>
-            <label htmlFor="name">Имя *</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              placeholder="Ваше имя"
-            />
-          </FormGroup>
-          
-          <FormGroup>
-            <label htmlFor="email">Email *</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              placeholder="your@email.com"
-            />
-          </FormGroup>
-          
-          <FormGroup>
-            <label htmlFor="phone">Телефон</label>
-            <PhoneInput
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handlePhoneChange}
-              placeholder="+7 (___) ___-__-__"
-            />
-          </FormGroup>
-          
-          <FormGroup>
-            <label htmlFor="subject">Тема *</label>
-            <CustomSelect
-              id="subject"
-              name="subject"
-              value={formData.subject}
-              onChange={handleChange}
-              required
-            >
-              <option value="" disabled>Выберите тему</option>
-              <option value="course">Вопрос по курсу</option>
-              <option value="payment">Оплата и документы</option>
-              <option value="technical">Техническая поддержка</option>
-              <option value="other">Другое</option>
-            </CustomSelect>
-          </FormGroup>
-          
-          <FormGroup>
-            <label htmlFor="message">Сообщение *</label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-              placeholder="Расскажите о вашем вопросе..."
-            />
-          </FormGroup>
-          
-          <SubmitButton type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Отправка...' : 'Отправить сообщение'}
-          </SubmitButton>
-          
-          {isSubmitted && (
-            <SuccessMessage>
-              ✅ Спасибо! Ваше сообщение отправлено. Мы свяжемся с вами в ближайшее время.
-            </SuccessMessage>
-          )}
-        </ContactForm>
-      </ContentGrid>
+          <ContactInfo>
+            <SectionTitle>Контактная информация</SectionTitle>
+            <ContactList>
+              {contactItems.map((item, index) => (
+                <ContactItem key={index}>
+                  <div className="content">
+                    <h3>{item.title}</h3>
+                    {item.content.map((line, i) => (
+                      <p key={i}>{line}</p>
+                    ))}
+                  </div>
+                </ContactItem>
+              ))}
+            </ContactList>
+          </ContactInfo>
+        </ContentGrid>
 
-      <MapSection>
-        <SectionTitle>Мы на карте</SectionTitle>
-        <MapPlaceholder>
-          <div className="map-content">
-            <div>Интерактивная карта будет здесь</div>
-          </div>
-        </MapPlaceholder>
-      </MapSection>
+        <MapSection>
+          <MapTitle>Мы на карте</MapTitle>
+          <MapPlaceholder>
+            Интерактивная карта будет здесь
+          </MapPlaceholder>
+        </MapSection>
 
-      <FAQSection>
-        <SectionTitle>Частые вопросы</SectionTitle>
-        <FAQGrid>
+        <FAQSection>
+          <FAQTitle>Частые вопросы</FAQTitle>
           {faqItems.map((item, index) => (
             <FAQItem key={index}>
-              <h3>{item.question}</h3>
-              <p>{item.answer}</p>
+              <FAQQuestion onClick={() => toggleFaq(index)} $open={openFaq === index}>
+                {item.question}
+                <span className="arrow">▼</span>
+              </FAQQuestion>
+              <FAQAnswer $open={openFaq === index}>
+                {item.answer}
+              </FAQAnswer>
             </FAQItem>
           ))}
-        </FAQGrid>
-      </FAQSection>
+        </FAQSection>
+      </Container>
     </ContactsContainer>
   );
 };

@@ -1,35 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-const pulse = keyframes`
-  0%, 100% { 
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% { 
-    transform: scale(1.1);
-    opacity: 0.8;
-  }
-`;
-
-const orbit = keyframes`
-  0% { 
-    transform: rotate(0deg) translateX(40px) rotate(0deg);
-  }
-  100% { 
-    transform: rotate(360deg) translateX(40px) rotate(-360deg);
-  }
-`;
-
-const textGlow = keyframes`
-  0%, 100% { 
-    text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
-  }
-  50% { 
-    text-shadow: 0 0 30px rgba(99, 102, 241, 0.8);
-  }
-`;
-
 const fadeOut = keyframes`
   0% {
     opacity: 1;
@@ -45,12 +16,8 @@ const fadeOut = keyframes`
 `;
 
 const progressBar = keyframes`
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 100%;
-  } 
+  0% { width: 0%; }
+  100% { width: 100%; }
 `;
 
 const PreloaderContainer = styled.div`
@@ -59,82 +26,81 @@ const PreloaderContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+  background: #F5F0E8;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  animation: ${fadeOut} 0.5s ease-in-out 2.5s forwards;
+  animation: ${fadeOut} 0.4s ease-in-out 2.2s forwards;
 `;
 
 const PreloaderContent = styled.div`
   text-align: center;
-  position: relative;
 `;
 
-const LogoOrb = styled.div`
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle at 30% 30%, #6366F1, transparent 50%),
-              radial-gradient(circle at 70% 70%, #8B5CF6, transparent 50%);
-  border-radius: 50%;
-  margin: 0 auto 2rem;
+const LogoBox = styled.div`
+  width: 80px;
+  height: 80px;
+  background: #FFFFFF;
+  border: 1px solid #D5CDC0;
+  margin: 0 auto 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
-  animation: ${pulse} 2s ease-in-out infinite;
-  box-shadow: 
-    inset 0 0 50px rgba(99, 102, 241, 0.3),
-    0 0 80px rgba(99, 102, 241, 0.2);
   position: relative;
-`;
-
-const OrbitingDot = styled.div`
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 50%;
-  animation: ${orbit} 3s linear infinite;
-  animation-delay: ${props => props.delay || '0s'};
   
-  &:nth-child(1) { animation-duration: 2s; }
-  &:nth-child(2) { animation-duration: 2.5s; animation-delay: -1s; }
-  &:nth-child(3) { animation-duration: 3s; animation-delay: -0.5s; }
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #2A2A2A;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  &:hover::before {
+    opacity: 1;
+  }
 `;
 
 const LogoText = styled.div`
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: ${textGlow} 2s ease-in-out infinite;
+  font-size: 28px;
+  font-weight: 500;
+  color: #2A2A2A;
+  letter-spacing: -0.02em;
 `;
 
-const ProgressBar = styled.div`
-  width: 300px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
+const CompanyName = styled.div`
+  font-size: 24px;
+  font-weight: 500;
+  color: #1A1A1A;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+`;
+
+const CompanySubtitle = styled.div`
+  font-size: 11px;
+  color: #808080;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+`;
+
+const ProgressBarContainer = styled.div`
+  width: 240px;
+  height: 1px;
+  background: #D5CDC0;
   overflow: hidden;
   margin: 0 auto;
-  position: relative;
 `;
 
 const ProgressFill = styled.div`
   height: 100%;
-  background: linear-gradient(90deg, #6366F1, #8B5CF6);
-  border-radius: 2px;
-  animation: ${progressBar} 2.5s ease-in-out forwards;
+  background: #2A2A2A;
+  animation: ${progressBar} 2s ease-in-out forwards;
 `;
-
-
-
 
 const Preloader = ({ onLoaded }) => {
   const [progress, setProgress] = useState(0);
@@ -148,13 +114,11 @@ const Preloader = ({ onLoaded }) => {
         }
         return prev + 2;
       });
-    }, 50);
+    }, 40);
 
     const timer = setTimeout(() => {
-      if (onLoaded) {
-        onLoaded();
-      }
-    }, 2500);
+      if (onLoaded) onLoaded();
+    }, 2200);
 
     return () => {
       clearInterval(interval);
@@ -165,19 +129,14 @@ const Preloader = ({ onLoaded }) => {
   return (
     <PreloaderContainer>
       <PreloaderContent>
-        <LogoOrb>
-          <OrbitingDot />
-          <OrbitingDot />
-          <OrbitingDot />
-        </LogoOrb>
-        
-        <LogoText>Корочки.есть</LogoText>
-        
-        <ProgressBar>
+        <LogoBox>
+          <LogoText>К</LogoText>
+        </LogoBox>
+        <CompanyName>Корочки.есть</CompanyName>
+        <CompanySubtitle>Образовательная платформа</CompanySubtitle>
+        <ProgressBarContainer>
           <ProgressFill style={{ width: `${progress}%` }} />
-        </ProgressBar>
-        
-       
+        </ProgressBarContainer>
       </PreloaderContent>
     </PreloaderContainer>
   );

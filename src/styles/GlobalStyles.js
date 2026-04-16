@@ -9,8 +9,8 @@ export const GlobalStyles = createGlobalStyle`
 
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-    background-color: ${props => props.theme.colors.background};
-    color: ${props => props.theme.colors.text.primary};
+    background-color: #F5F0E8;
+    color: #2A2A2A;
     line-height: 1.6;
   }
 
@@ -27,25 +27,25 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 24px;
   }
   
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: ${props => props.theme.colors.surface};
+    background: #E8E0D5;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: ${props => props.theme.colors.surfaceLight};
-    border-radius: 4px;
+    background: #2A2A2A;
+    border-radius: 3px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: ${props => props.theme.colors.surfaceLighter};
+    background: #1A1A1A;
   }
 `;

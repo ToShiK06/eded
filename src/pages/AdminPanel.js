@@ -1,4 +1,4 @@
-// pages/AdminPanel.js
+
 import React, { useState, useEffect, useCallback } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { useAuth } from '../context/AuthContext'
@@ -14,308 +14,308 @@ const fadeIn = keyframes`
 `
 
 const AdminContainer = styled.div`
-	max-width: 1400px;
-	margin: 100px auto 60px;
-	padding: 0 24px;
+  max-width: 1400px;
+  margin: 100px auto 60px;
+  padding: 0 24px;
+  background: #F5F0E8;
 `
 
 const AdminHeader = styled.div`
-	text-align: left;
-	margin-bottom: 40px;
-	padding-bottom: 24px;
-	border-bottom: 1px solid #2A2A2A;
+  text-align: left;
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #D5CDC0;
 `
 
 const AdminTitle = styled.h1`
-	font-size: 32px;
-	font-weight: 500;
-	color: #FFFFFF;
-	margin-bottom: 8px;
-	letter-spacing: -0.02em;
+  font-size: 32px;
+  font-weight: 500;
+  color: #1A1A1A;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
 `
 
 const StatsCard = styled.div`
-	background: #141414;
-	border: 1px solid #2A2A2A;
-	padding: 32px;
-	margin-bottom: 30px;
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	gap: 24px;
+  background: #FFFFFF;
+  border: 1px solid #D5CDC0;
+  padding: 32px;
+  margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
 `
 
 const StatItem = styled.div`
-	text-align: left;
+  text-align: left;
 
-	.stat-number {
-		font-size: 36px;
-		font-weight: 500;
-		color: #D4C5B0;
-		margin-bottom: 8px;
-		letter-spacing: -0.02em;
-	}
+  .stat-number {
+    font-size: 36px;
+    font-weight: 500;
+    color: #2A2A2A;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
 
-	.stat-label {
-		color: #B0B0B0;
-		font-size: 13px;
-		text-transform: uppercase;
-		letter-spacing: 1px;
-	}
+  .stat-label {
+    color: #4A4A4A;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
 `
 
 const DebugSection = styled.div`
-	background: #141414;
-	border: 1px solid #2A2A2A;
-	padding: 20px;
-	margin-bottom: 30px;
-	font-family: 'Monaco', 'Courier New', monospace;
-	font-size: 13px;
-	color: #B0B0B0;
-	white-space: pre-wrap;
-	max-height: 300px;
-	overflow-y: auto;
-	line-height: 1.5;
+  background: #FFFFFF;
+  border: 1px solid #D5CDC0;
+  padding: 20px;
+  margin-bottom: 30px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  color: #4A4A4A;
+  white-space: pre-wrap;
+  max-height: 300px;
+  overflow-y: auto;
+  line-height: 1.5;
 `
 
 const ActionButtons = styled.div`
-	display: flex;
-	gap: 12px;
-	margin-bottom: 30px;
-	flex-wrap: wrap;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
 `
 
 const ActionButton = styled.button`
-	padding: 10px 24px;
-	background: ${props =>
+  padding: 10px 24px;
+  background: ${props =>
 		props.$variant === 'danger'
-			? 'transparent'
-			: '#2A2A2A'};
-	border: 1px solid
+			? '#FFFFFF'
+			: '#FFFFFF'};
+  border: 1px solid
 		${props =>
 			props.$variant === 'danger'
 				? '#ef4444'
-				: '#2A2A2A'};
-	color: ${props => (props.$variant === 'danger' ? '#ef4444' : '#D4C5B0')};
-	font-weight: 500;
-	font-size: 13px;
-	letter-spacing: 0.5px;
-	cursor: pointer;
-	transition: all 0.3s ease;
+				: '#D5CDC0'};
+  color: ${props => (props.$variant === 'danger' ? '#ef4444' : '#2A2A2A')};
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 
-	&:hover {
-		background: ${props =>
+  &:hover {
+    background: ${props =>
 			props.$variant === 'danger'
-				? 'rgba(239, 68, 68, 0.1)'
-				: '#D4C5B0'};
-		color: ${props => (props.$variant === 'danger' ? '#ef4444' : '#0A0A0A')};
-		border-color: ${props =>
+				? 'rgba(239, 68, 68, 0.05)'
+				: '#EDE5DB'};
+    border-color: ${props =>
 			props.$variant === 'danger'
 				? '#ef4444'
-				: '#D4C5B0'};
-	}
+				: '#2A2A2A'};
+  }
 
-	&:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `
 
 const SearchSection = styled.div`
-	background: #141414;
-	border: 1px solid #2A2A2A;
-	padding: 24px;
-	margin-bottom: 30px;
+  background: #FFFFFF;
+  border: 1px solid #D5CDC0;
+  padding: 24px;
+  margin-bottom: 30px;
 `
 
 const SearchInput = styled.input`
-	width: 100%;
-	padding: 12px 16px;
-	background: #0A0A0A;
-	border: 1px solid #2A2A2A;
-	color: #FFFFFF;
-	font-size: 14px;
-	transition: all 0.3s ease;
+  width: 100%;
+  padding: 12px 16px;
+  background: #F5F0E8;
+  border: 1px solid #D5CDC0;
+  color: #1A1A1A;
+  font-size: 14px;
+  transition: all 0.3s ease;
 
-	&:focus {
-		outline: none;
-		border-color: #D4C5B0;
-	}
+  &:focus {
+    outline: none;
+    border-color: #2A2A2A;
+  }
 
-	&::placeholder {
-		color: #666;
-	}
+  &::placeholder {
+    color: #808080;
+  }
 `
 
 const ResultsCount = styled.div`
-	margin-bottom: 20px;
-	color: #B0B0B0;
-	font-size: 13px;
-	letter-spacing: 0.5px;
+  margin-bottom: 20px;
+  color: #4A4A4A;
+  font-size: 13px;
+  letter-spacing: 0.5px;
 `
 
 const UserCard = styled.div`
-	background: #141414;
-	border: 1px solid #2A2A2A;
-	padding: 24px;
-	margin-bottom: 20px;
-	transition: all 0.3s ease;
-	animation: ${fadeIn} 0.3s ease-out;
+  background: #FFFFFF;
+  border: 1px solid #D5CDC0;
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  animation: ${fadeIn} 0.3s ease-out;
 
-	&:hover {
-		border-color: #D4C5B0;
-	}
+  &:hover {
+    border-color: #2A2A2A;
+  }
 `
 
 const UserEmail = styled.h3`
-	font-size: 18px;
-	font-weight: 500;
-	color: #FFFFFF;
-	margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #1A1A1A;
+  margin: 0 0 8px 0;
 `
 
 const UserMeta = styled.div`
-	color: #B0B0B0;
-	font-size: 13px;
-	margin-bottom: 20px;
-	padding-bottom: 16px;
-	border-bottom: 1px solid #2A2A2A;
+  color: #4A4A4A;
+  font-size: 13px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #D5CDC0;
 `
 
 const CourseList = styled.div`
-	margin-top: 16px;
+  margin-top: 16px;
 `
 
 const CourseListTitle = styled.h4`
-	color: #D4C5B0;
-	font-size: 14px;
-	font-weight: 500;
-	margin-bottom: 12px;
-	text-transform: uppercase;
-	letter-spacing: 1px;
+  color: #2A2A2A;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 `
 
 const CourseItem = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 12px 16px;
-	background: #0A0A0A;
-	margin-bottom: 8px;
-	border: 1px solid #2A2A2A;
-	transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #F5F0E8;
+  margin-bottom: 8px;
+  border: 1px solid #D5CDC0;
+  transition: all 0.3s ease;
 
-	&:hover {
-		border-color: #D4C5B0;
-	}
+  &:hover {
+    border-color: #2A2A2A;
+  }
 `
 
 const CourseInfo = styled.div`
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
 `
 
 const CourseTitle = styled.span`
-	color: #FFFFFF;
-	font-weight: 500;
-	font-size: 14px;
+  color: #1A1A1A;
+  font-weight: 500;
+  font-size: 14px;
 `
 
 const CourseId = styled.span`
-	color: #808080;
-	font-size: 12px;
-	font-family: monospace;
+  color: #808080;
+  font-size: 12px;
+  font-family: monospace;
 `
 
 const DeleteButton = styled.button`
-	padding: 8px 20px;
-	background: transparent;
-	border: 1px solid #ef4444;
-	color: #ef4444;
-	font-weight: 500;
-	font-size: 12px;
-	cursor: pointer;
-	transition: all 0.3s ease;
-	white-space: nowrap;
-	min-width: 90px;
+  padding: 8px 20px;
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-width: 90px;
 
-	&:hover {
-		background: rgba(239, 68, 68, 0.1);
-		transform: translateY(-1px);
-	}
+  &:hover {
+    background: rgba(239, 68, 68, 0.05);
+    transform: translateY(-1px);
+  }
 
-	&:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-		transform: none;
-	}
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
 `
 
 const NoCoursesMessage = styled.div`
-	color: #808080;
-	text-align: center;
-	padding: 20px;
-	font-style: italic;
-	font-size: 13px;
-	border: 1px dashed #2A2A2A;
-	margin-top: 12px;
+  color: #808080;
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  font-size: 13px;
+  border: 1px dashed #D5CDC0;
+  margin-top: 12px;
 `
 
 const EmptyState = styled.div`
-	text-align: center;
-	padding: 60px 40px;
-	background: #141414;
-	border: 1px solid #2A2A2A;
+  text-align: center;
+  padding: 60px 40px;
+  background: #FFFFFF;
+  border: 1px solid #D5CDC0;
 
-	h3 {
-		color: #FFFFFF;
-		font-size: 20px;
-		font-weight: 500;
-		margin-bottom: 12px;
-	}
+  h3 {
+    color: #1A1A1A;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
 
-	p {
-		color: #B0B0B0;
-		font-size: 14px;
-		margin-bottom: 24px;
-	}
+  p {
+    color: #4A4A4A;
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
 `
 
 const LoadingSpinner = styled.div`
-	text-align: center;
-	padding: 60px;
+  text-align: center;
+  padding: 60px;
 
-	.spinner {
-		width: 40px;
-		height: 40px;
-		border: 2px solid #2A2A2A;
-		border-top-color: #D4C5B0;
-		border-radius: 50%;
-		margin: 0 auto;
-		animation: spin 0.8s linear infinite;
-	}
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #D5CDC0;
+    border-top-color: #2A2A2A;
+    border-radius: 50%;
+    margin: 0 auto;
+    animation: spin 0.8s linear infinite;
+  }
 
-	@keyframes spin {
-		to {
-			transform: rotate(360deg);
-		}
-	}
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 
-	p {
-		margin-top: 16px;
-		color: #B0B0B0;
-		font-size: 14px;
-	}
+  p {
+    margin-top: 16px;
+    color: #4A4A4A;
+    font-size: 14px;
+  }
 `
 
 const ErrorMessage = styled.div`
-	background: rgba(239, 68, 68, 0.1);
-	border: 1px solid rgba(239, 68, 68, 0.3);
-	padding: 16px;
-	margin-bottom: 24px;
-	color: #ef4444;
-	font-size: 14px;
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 16px;
+  margin-bottom: 24px;
+  color: #ef4444;
+  font-size: 14px;
 `
 
 const AdminPanel = () => {
@@ -474,7 +474,7 @@ const AdminPanel = () => {
 		<AdminContainer>
 			<AdminHeader>
 				<AdminTitle>Админ панель</AdminTitle>
-				<p style={{ color: '#B0B0B0', fontSize: '14px' }}>
+				<p style={{ color: '#4A4A4A', fontSize: '14px' }}>
 					{currentUser?.email || 'Не авторизован'}
 				</p>
 			</AdminHeader>
@@ -495,7 +495,7 @@ const AdminPanel = () => {
 			</StatsCard>
 
 			<DebugSection>
-				<strong style={{ color: '#D4C5B0' }}>Отладка:</strong>
+				<strong style={{ color: '#2A2A2A' }}>Отладка:</strong>
 				<div style={{ marginTop: '8px' }}>{debugInfo}</div>
 			</DebugSection>
 
@@ -560,7 +560,7 @@ const AdminPanel = () => {
 											<CourseId>
 												ID: {course.id} | {course.category} | {course.duration} |
 												{course.purchaseDate ? new Date(course.purchaseDate).toLocaleDateString('ru-RU') : 'нет даты'} |
-												{course.price?.toLocaleString('ru-RU') || 0} ₽ | Прогресс: {course.progress || 0}%
+												{course.price?.toLocaleString('ru-RU') || '0'} ₽ | Прогресс: {course.progress || 0}%
 											</CourseId>
 										</CourseInfo>
 										<DeleteButton

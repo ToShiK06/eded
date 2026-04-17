@@ -1,4 +1,4 @@
-/* Profile.js - обновлен */
+
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useAuth } from '../context/AuthContext'

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
+import assImage from '../image/ass.png'; 
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(30px); }
@@ -12,7 +13,6 @@ const HomeContainer = styled.div`
   background: #F5F0E8;
 `;
 
-// Hero секция - меняем расположение
 const HeroSection = styled.section`
   min-height: 90vh;
   display: flex;
@@ -36,7 +36,6 @@ const HeroContent = styled.div`
   }
 `;
 
-// Меняем местами - текст теперь справа, картинка слева
 const TextContent = styled.div`
   animation: ${fadeIn} 0.8s ease-out;
   order: 2;
@@ -103,16 +102,14 @@ const CTAButton = styled(Link)`
 const HeroImage = styled.div`
   width: 100%;
   height: 400px;
-  background: linear-gradient(135deg, #EDE5DB 0%, #E0D8CD 100%);
-  border: 1px solid #D5CDC0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-image: url(${assImage});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   position: relative;
   overflow: hidden;
 `;
 
-// Секция со статистикой - меняем расположение (теперь горизонтальный скролл)
 const StatsSection = styled.section`
   padding: 80px 24px;
   background: #FFFFFF;
@@ -154,7 +151,6 @@ const StatLabel = styled.div`
   letter-spacing: 1px;
 `;
 
-// Секция с преимуществами - меняем на 2 колонки вместо 3
 const FeaturesSection = styled.section`
   padding: 100px 24px;
 `;
@@ -229,7 +225,6 @@ const FeatureDescription = styled.p`
   font-size: 15px;
 `;
 
-// Новая секция с CTA
 const CTASection = styled.section`
   padding: 80px 24px;
   background: #2A2A2A;

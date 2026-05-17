@@ -26,32 +26,21 @@ const HeaderContainer = styled.div`
 const Logo = styled(Link)`
   font-size: 20px;
   font-weight: 600;
-  letter-spacing: -0.5px;
   color: #00FF88;
-  
-  span {
-    color: #EDEDED;
-  }
+  span { color: #EDEDED; }
 `;
 
 const Nav = styled.nav`
   display: flex;
   gap: 32px;
   align-items: center;
-  
-  @media (max-width: 768px) {
-    display: none;
-  }
+  @media (max-width: 768px) { gap: 16px; }
 `;
 
 const NavLink = styled(Link)`
   font-size: 14px;
   color: #EDEDED;
-  transition: color 0.2s;
-  
-  &:hover {
-    color: #00FF88;
-  }
+  &:hover { color: #00FF88; }
 `;
 
 const AuthButton = styled.button`
@@ -60,14 +49,8 @@ const AuthButton = styled.button`
   border: 1px solid #00FF88;
   color: #00FF88;
   font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s;
   cursor: pointer;
-  
-  &:hover {
-    background: #00FF88;
-    color: #0A0A0A;
-  }
+  &:hover { background: #00FF88; color: #0A0A0A; }
 `;
 
 const UserMenu = styled.div`
@@ -79,12 +62,8 @@ const UserButton = styled.button`
   background: #1A1A1A;
   border: 1px solid #2A2A2A;
   color: #EDEDED;
-  font-size: 14px;
   cursor: pointer;
-  
-  &:hover {
-    border-color: #00FF88;
-  }
+  &:hover { border-color: #00FF88; }
 `;
 
 const Dropdown = styled.div`
@@ -94,7 +73,7 @@ const Dropdown = styled.div`
   margin-top: 8px;
   background: #1A1A1A;
   border: 1px solid #2A2A2A;
-  min-width: 160px;
+  min-width: 200px;
   z-index: 100;
 `;
 
@@ -103,12 +82,7 @@ const DropdownItem = styled(Link)`
   padding: 12px 16px;
   font-size: 14px;
   color: #EDEDED;
-  transition: all 0.2s;
-  
-  &:hover {
-    background: #2A2A2A;
-    color: #00FF88;
-  }
+  &:hover { background: #2A2A2A; color: #00FF88; }
 `;
 
 const DropdownButton = styled.button`
@@ -121,14 +95,11 @@ const DropdownButton = styled.button`
   font-size: 14px;
   color: #FF4444;
   cursor: pointer;
-  
-  &:hover {
-    background: #2A2A2A;
-  }
+  &:hover { background: #2A2A2A; }
 `;
 
 const Header = () => {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, userData, logout } = useAuth();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -141,17 +112,22 @@ const Header = () => {
   return (
     <HeaderWrapper>
       <HeaderContainer>
-        <Logo to="/">korochki<span>.est</span></Logo>
+        <Logo to="/">Корочки<span>.есть</span></Logo>
         <Nav>
           <NavLink to="/courses">Курсы</NavLink>
+          <NavLink to="/reviews">Отзывы</NavLink>
           {currentUser ? (
             <UserMenu>
               <UserButton onClick={() => setIsOpen(!isOpen)}>
-                Аккаунт
+                {userData?.fullName || userData?.login || 'Аккаунт'}
               </UserButton>
               {isOpen && (
                 <Dropdown>
-                  <DropdownItem to="/dashboard">Мои курсы</DropdownItem>
+                  <DropdownItem to="/applications">Мои заявки</DropdownItem>
+                  <DropdownItem to="/new-application">Новая заявка</DropdownItem>
+                  {(userData?.role === 'admin' || userData?.login === 'Admin') && (
+                    <DropdownItem to="/admin">Админ панель</DropdownItem>
+                  )}
                   <DropdownButton onClick={handleLogout}>Выйти</DropdownButton>
                 </Dropdown>
               )}

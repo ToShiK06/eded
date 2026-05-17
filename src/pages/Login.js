@@ -9,6 +9,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   padding: 120px 24px;
+  background: #0A0A0A;
 `;
 
 const Card = styled.div`
@@ -22,6 +23,7 @@ const Card = styled.div`
 const Title = styled.h1`
   font-size: 28px;
   font-weight: 600;
+  color: #00FF88;
   margin-bottom: 8px;
 `;
 
@@ -51,7 +53,7 @@ const Input = styled.input`
   padding: 12px 0;
   background: transparent;
   border: none;
-  border-bottom: 1px solid #2A2A2A;
+  border-bottom: 1px solid ${props => props.$error ? '#FF4444' : '#2A2A2A'};
   color: #EDEDED;
   font-size: 15px;
   
@@ -73,7 +75,6 @@ const Button = styled.button`
   &:hover {
     background: #00CC6E;
   }
-  
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -90,71 +91,59 @@ const Footer = styled.div`
 const StyledLink = styled(Link)`
   color: #00FF88;
   margin-left: 8px;
-  
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 const ErrorMessage = styled.div`
   color: #FF4444;
   font-size: 13px;
-  margin-top: 8px;
+  text-align: center;
+  margin-bottom: 16px;
 `;
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [loginInput, setLoginInput] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { login } = useAuth();
+  const { login, userData } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    
-    try {
-      const result = await login(email, password);
-      if (result.success) {
-        navigate(email === 'admin@admin.da' ? '/admin' : '/dashboard');
-      } else {
-        setError('Неверный email или пароль');
-      }
-    } catch {
-      setError('Ошибка при входе');
-    } finally {
-      setIsLoading(false);
+    const result = await login(loginInput, password);
+    if (result.success) {
+      if (userData?.role === 'admin' || loginInput === 'Admin') navigate('/admin');
+      else navigate('/applications');
+    } else {
+      setError('Неверный логин или пароль');
     }
+    setIsLoading(false);
   };
 
   return (
     <Container>
       <Card>
-        <Title>Вход</Title>
-        <Subtitle>Войдите в свой аккаунт</Subtitle>
-        
+        <Title>Авторизация</Title>
+        <Subtitle>Войдите в систему "Корочки.есть"</Subtitle>
         <Form onSubmit={handleSubmit}>
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          
           <InputGroup>
-            <Label>Email</Label>
-            <Input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+            <Label>Логин или Email</Label>
+            <Input $error={error} value={loginInput} 
+              onChange={e => setLoginInput(e.target.value)} required />
           </InputGroup>
-          
           <InputGroup>
             <Label>Пароль</Label>
-            <Input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+            <Input type="password" $error={error} value={password}
+              onChange={e => setPassword(e.target.value)} required />
           </InputGroup>
-          
           <Button type="submit" disabled={isLoading}>
             {isLoading ? 'Вход...' : 'Войти'}
           </Button>
-          
           <Footer>
-            Нет аккаунта?
-            <StyledLink to="/register">Зарегистрироваться</StyledLink>
+            Еще не зарегистрированы? <StyledLink to="/register">Регистрация</StyledLink>
           </Footer>
         </Form>
       </Card>

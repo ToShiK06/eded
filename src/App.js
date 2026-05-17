@@ -1,70 +1,45 @@
-import React, { useState, Suspense, useEffect } from 'react'
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from 'react-router-dom'
-import { ThemeProvider } from 'styled-components'
-import { theme } from './styles/theme'
-import { GlobalStyles } from './styles/GlobalStyles'
-import styled from 'styled-components'
-
-import { AuthProvider } from './context/AuthContext'
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
-import AdminRoute from './components/AdminRoute'
-import Preloader from './components/layout/Preloader'
-import Header from './components/layout/Header'
-
-const Home = React.lazy(() => import('./pages/Home'))
-const Courses = React.lazy(() => import('./pages/Courses'))
-const CourseDetail = React.lazy(() => import('./pages/CourseDetail'))
-const Login = React.lazy(() => import('./pages/Login'))
-const Register = React.lazy(() => import('./pages/Register'))
-const Dashboard = React.lazy(() => import('./pages/Dashboard'))
-const AdminPanel = React.lazy(() => import('./pages/AdminPanel'))
-
-const MainContent = styled.main`
-  min-height: 100vh;
-`
-
-const ScrollToTop = () => {
-  const { pathname } = useLocation()
-  useEffect(() => window.scrollTo(0, 0), [pathname])
-  return null
-}
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './styles/theme';
+import { GlobalStyles } from './styles/GlobalStyles';
+import { AuthProvider } from './context/AuthContext';
+import { ApplicationProvider } from './context/ApplicationContext';
+import Header from './components/layout/Header';
+import Courses from './pages/Courses';
+import Home from './pages/Home';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import ApplicationForm from './pages/ApplicationForm';
+import MyApplications from './pages/MyApplications';
+import AdminPanel from './pages/AdminPanel';
+import Reviews from './pages/Reviews';
 
 function App() {
-  const [isLoaded, setIsLoaded] = useState(false)
-
-  if (!isLoaded) {
-    return <Preloader onLoaded={() => setIsLoaded(true)} />
-  }
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <AuthProvider>
-        <Router>
-          <Header />
-          <MainContent>
-            <ScrollToTop />
+        <ApplicationProvider>
+          <Router>
+            <Header />
             <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
               <Routes>
-                <Route path='/' element={<Home />} />
-                <Route path='/courses' element={<Courses />} />
-                <Route path='/course/:id' element={<CourseDetail />} />
-                <Route path='/login' element={<Login />} />
-                <Route path='/register' element={<Register />} />
-                <Route path='/dashboard' element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                <Route path='/admin' element={<AdminRoute><AdminPanel /></AdminRoute>} />
+                <Route path="/courses" element={<Courses />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/new-application" element={<ApplicationForm />} />
+                <Route path="/applications" element={<MyApplications />} />
+                <Route path="/admin" element={<AdminPanel />} />
+                <Route path="/reviews" element={<Reviews />} />
               </Routes>
             </Suspense>
-          </MainContent>
-        </Router>
+          </Router>
+        </ApplicationProvider>
       </AuthProvider>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;

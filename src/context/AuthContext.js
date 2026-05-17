@@ -1,13 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { auth, db } from '../firebase';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  updateProfile
-} from 'firebase/auth';
-import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 const AuthContext = createContext();
 
@@ -18,176 +12,126 @@ export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Регистрация
   const signup = async (email, password, additionalData) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       
-      await updateProfile(user, {
-        displayName: `${additionalData.firstName} ${additionalData.lastName}`
-      });
-      
-      const userDoc = {
+      await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
         email: user.email,
-        displayName: `${additionalData.firstName} ${additionalData.lastName}`,
-        firstName: additionalData.firstName,
-        lastName: additionalData.lastName,
-        purchasedCourses: [],
+        login: additionalData.login,
+        fullName: additionalData.fullName,
+        phone: additionalData.phone,
+        role: 'user',
         createdAt: new Date().toISOString()
-      };
-      
-      await setDoc(doc(db, 'users', user.uid), userDoc);
-      return { success: true };
-    } catch (error) {
-      console.error('Signup error:', error);
-      return { success: false, error: error.message };
-    }
-  };
-
-  const login = async (email, password) => {
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      const userDoc = await getDoc(doc(db, 'users', user.uid));
-      if (userDoc.exists()) {
-        setUserData(userDoc.data());
-      }
-      return { success: true };
-    } catch (error) {
-      console.error('Login error:', error);
-      return { success: false, error: error.message };
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await signOut(auth);
-      setUserData(null);
-      return { success: true };
-    } catch (error) {
-      console.error('Logout error:', error);
-      return { success: false, error: error.message };
-    }
-  };
-
-  const purchaseCourse = async (courseId, courseData) => {
-    if (!currentUser) return { success: false, message: 'Необходимо войти' };
-    
-    try {
-      const userRef = doc(db, 'users', currentUser.uid);
-      const courseToAdd = {
-        id: courseId,
-        title: courseData.title,
-        description: courseData.description,
-        price: courseData.price,
-        category: courseData.category,
-        progress: 0,
-        purchaseDate: new Date().toISOString()
-      };
-      
-      await updateDoc(userRef, {
-        purchasedCourses: arrayUnion(courseToAdd)
       });
       
-      const updatedDoc = await getDoc(userRef);
-      setUserData(updatedDoc.data());
+      console.log('✅ Регистрация успешна! UID:', user.uid);
       return { success: true };
     } catch (error) {
-      console.error('Purchase error:', error);
-      return { success: false, message: error.message };
+      console.error('Ошибка:', error);
+      return { success: false, error: error.message };
     }
   };
 
-  const getPurchasedCourses = async () => {
-    if (!currentUser) return [];
+  // Вход
+  const login = async (loginOrEmail, password) => {
     try {
-      const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-      if (userDoc.exists()) {
-        const data = userDoc.data();
-        return data.purchasedCourses || [];
-      }
-      return [];
-    } catch (error) {
-      console.error('Get courses error:', error);
-      return [];
-    }
-  };
-
-  const getAllUsers = async () => {
-    try {
-      const { getDocs, collection } = await import('firebase/firestore');
-      const querySnapshot = await getDocs(collection(db, 'users'));
-      return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    } catch (error) {
-      console.error('Get users error:', error);
-      return [];
-    }
-  };
-
-  const deleteUserCourse = async (userId, courseId) => {
-    try {
-      const userRef = doc(db, 'users', userId);
-      const userDoc = await getDoc(userRef);
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        const updatedCourses = (userData.purchasedCourses || []).filter(c => c.id !== courseId);
-        await updateDoc(userRef, { purchasedCourses: updatedCourses });
+      // Админ
+      if (loginOrEmail === 'admin@admin.da' && password === 'Admin123') {
+        const adminUser = {
+          uid: 'admin',
+          email: 'admin@admin.da',
+          login: 'admin',
+          fullName: 'Администратор',
+          role: 'admin'
+        };
+        setCurrentUser(adminUser);
+        setUserData(adminUser);
+        localStorage.setItem('current_user', JSON.stringify(adminUser));
+        console.log('✅ Вход админа');
         return { success: true };
       }
-      return { success: false };
+
+      // Обычный пользователь
+      let email = loginOrEmail;
+      if (!email.includes('@')) {
+        email = `${loginOrEmail}@temp.com`;
+      }
+      
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const userDataFromDb = userDoc.exists() ? userDoc.data() : {};
+      
+      const fullUser = {
+        uid: user.uid,
+        email: user.email,
+        ...userDataFromDb,
+        role: 'user'
+      };
+      
+      console.log('✅ Вход пользователя! UID:', user.uid);
+      console.log('Полные данные:', fullUser);
+      
+      setCurrentUser(fullUser);
+      setUserData(fullUser);
+      localStorage.setItem('current_user', JSON.stringify(fullUser));
+      return { success: true };
     } catch (error) {
-      console.error('Delete course error:', error);
+      console.error('Ошибка входа:', error);
       return { success: false };
     }
   };
 
-  const updateUserProfile = async (data) => {
-    if (!currentUser) return;
+  // Выход
+  const logout = async () => {
     try {
-      const userRef = doc(db, 'users', currentUser.uid);
-      await updateDoc(userRef, data);
-      setUserData(prev => ({ ...prev, ...data }));
+      if (currentUser?.uid !== 'admin') {
+        await signOut(auth);
+      }
+      setCurrentUser(null);
+      setUserData(null);
+      localStorage.removeItem('current_user');
+      console.log('✅ Выход');
       return { success: true };
     } catch (error) {
-      console.error('Update profile error:', error);
       return { success: false };
     }
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setCurrentUser(user);
       if (user) {
         const userDoc = await getDoc(doc(db, 'users', user.uid));
-        if (userDoc.exists()) {
-          setUserData(userDoc.data());
-        }
+        const fullUser = {
+          uid: user.uid,
+          email: user.email,
+          ...(userDoc.exists() ? userDoc.data() : {}),
+          role: 'user'
+        };
+        setCurrentUser(fullUser);
+        setUserData(fullUser);
+        localStorage.setItem('current_user', JSON.stringify(fullUser));
       } else {
-        setUserData(null);
+        const saved = localStorage.getItem('current_user');
+        if (saved && JSON.parse(saved).role === 'admin') {
+          const admin = JSON.parse(saved);
+          setCurrentUser(admin);
+          setUserData(admin);
+        } else {
+          setCurrentUser(null);
+          setUserData(null);
+        }
       }
       setLoading(false);
     });
     return unsubscribe;
   }, []);
 
-  const value = {
-    currentUser,
-    userData,
-    loading,
-    signup,
-    login,
-    logout,
-    purchaseCourse,
-    getPurchasedCourses,
-    getAllUsers,
-    deleteUserCourse,
-    updateUserProfile
-  };
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value = { currentUser, userData, loading, signup, login, logout };
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

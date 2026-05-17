@@ -1,207 +1,148 @@
-
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
-import { useAuth } from '../context/AuthContext'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Container = styled.div`
+  min-height: 100vh;
+  padding: 120px 24px 80px;
+`;
+
+const Wrapper = styled.div`
   max-width: 1200px;
-  margin: 100px auto 60px;
-  padding: 0 24px;
-`
+  margin: 0 auto;
+`;
 
-const DashboardHeader = styled.div`
-  text-align: left;
-  margin-bottom: 50px;
-  padding-bottom: 30px;
-  border-bottom: 1px solid #2A2A2A;
-`
-
-const WelcomeText = styled.h1`
+const Title = styled.h1`
   font-size: 36px;
-  font-weight: 500;
-  color: #FFFFFF;
-  margin-bottom: 8px;
-  letter-spacing: -0.02em;
-`
-
-const SectionTitle = styled.h2`
-  font-size: 28px;
-  font-weight: 500;
-  margin-bottom: 30px;
-  color: #FFFFFF;
-`
+  font-weight: 600;
+  letter-spacing: -1px;
+  margin-bottom: 48px;
+`;
 
 const CoursesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 30px;
-`
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`;
 
-const CourseCard = styled.div`
-  background: #141414;
+const CourseCard = styled(Link)`
+  background: #1A1A1A;
+  padding: 32px;
   border: 1px solid #2A2A2A;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-
+  transition: all 0.2s;
+  
   &:hover {
-    border-color: #D4C5B0;
+    border-color: #00FF88;
     transform: translateY(-4px);
   }
-`
-
-const CourseContent = styled.div`
-  padding: 28px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-`
+`;
 
 const CourseTitle = styled.h3`
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
   margin-bottom: 12px;
-  color: #FFFFFF;
-`
-
-const CourseDescription = styled.p`
-  color: #B0B0B0;
-  margin-bottom: 20px;
-  font-size: 14px;
-  line-height: 1.6;
-  flex: 1;
-`
+`;
 
 const ProgressBar = styled.div`
   background: #2A2A2A;
-  height: 3px;
-  margin-bottom: 10px;
-  overflow: hidden;
-`
+  height: 4px;
+  margin: 20px 0 12px;
+`;
 
 const ProgressFill = styled.div`
   width: ${props => props.progress}%;
   height: 100%;
-  background: #D4C5B0;
-`
+  background: #00FF88;
+`;
 
 const ProgressText = styled.div`
   font-size: 12px;
-  color: #808080;
+  color: #555555;
   text-align: right;
-  margin-bottom: 20px;
-`
-
-const ActionButton = styled(Link)`
-  display: block;
-  width: 100%;
-  padding: 14px;
-  background: #2A2A2A;
-  border: none;
-  color: #FFFFFF;
-  font-weight: 500;
-  font-size: 14px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: #D4C5B0;
-    color: #0A0A0A;
-  }
-`
+`;
 
 const EmptyState = styled.div`
   text-align: center;
-  padding: 60px;
-  background: #141414;
+  padding: 80px;
+  background: #1A1A1A;
   border: 1px solid #2A2A2A;
-
+  
   h3 {
-    font-size: 24px;
-    font-weight: 500;
     margin-bottom: 16px;
-    color: #FFFFFF;
   }
-
+  
   p {
-    color: #B0B0B0;
-    margin-bottom: 30px;
+    color: #888888;
+    margin-bottom: 32px;
   }
-`
+`;
+
+const Button = styled(Link)`
+  display: inline-block;
+  padding: 12px 32px;
+  background: #00FF88;
+  color: #0A0A0A;
+  font-weight: 600;
+  
+  &:hover {
+    background: #00CC6E;
+  }
+`;
 
 const Dashboard = () => {
-  const { currentUser, userData, getPurchasedCourses } = useAuth()
-  const [purchasedCourses, setPurchasedCourses] = useState([])
-  const [loading, setLoading] = useState(true)
+  const { currentUser, userData, getPurchasedCourses } = useAuth();
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPurchasedCourses = async () => {
-      try {
-        setLoading(true)
-        if (currentUser) {
-          const courses = await getPurchasedCourses()
-          setPurchasedCourses(Array.isArray(courses) ? courses : [])
-        }
-      } catch (error) {
-        console.error('Ошибка загрузки курсов:', error)
-        setPurchasedCourses([])
-      } finally {
-        setLoading(false)
+    const fetch = async () => {
+      if (currentUser) {
+        const purchased = await getPurchasedCourses();
+        setCourses(purchased || []);
       }
-    }
-    fetchPurchasedCourses()
-  }, [currentUser, getPurchasedCourses])
+      setLoading(false);
+    };
+    fetch();
+  }, [currentUser, getPurchasedCourses]);
 
-  if (loading) {
-    return (
-      <Container>
-        <div style={{ textAlign: 'center', padding: '60px', color: '#B0B0B0' }}>
-          Загрузка ваших курсов...
-        </div>
-      </Container>
-    )
-  }
+  if (loading) return <Container><Wrapper style={{ textAlign: 'center', color: '#555' }}>Загрузка...</Wrapper></Container>;
 
   return (
     <Container>
-      <DashboardHeader>
-        <WelcomeText>
-          Добро пожаловать, {userData?.displayName || currentUser?.email?.split('@')[0]}!
-        </WelcomeText>
-        <p style={{ color: '#B0B0B0', fontSize: '16px' }}>Ваши приобретенные курсы</p>
-      </DashboardHeader>
-
-      <SectionTitle>Мои курсы</SectionTitle>
-
-      {purchasedCourses && purchasedCourses.length > 0 ? (
-        <CoursesGrid>
-          {purchasedCourses.map(course => (
-            <CourseCard key={course.id}>
-              <CourseContent>
+      <Wrapper>
+        <Title>Мои курсы, {userData?.displayName || currentUser?.email?.split('@')[0]}</Title>
+        
+        {courses.length === 0 ? (
+          <EmptyState>
+            <h3>У вас пока нет курсов</h3>
+            <p>Выберите курс и начните обучение</p>
+            <Button to="/courses">Смотреть курсы</Button>
+          </EmptyState>
+        ) : (
+          <CoursesGrid>
+            {courses.map(course => (
+              <CourseCard key={course.id} to={`/course/${course.id}`}>
                 <CourseTitle>{course.title}</CourseTitle>
-                <CourseDescription>{course.description}</CourseDescription>
                 <ProgressBar>
                   <ProgressFill progress={course.progress || 0} />
                 </ProgressBar>
                 <ProgressText>Прогресс: {course.progress || 0}%</ProgressText>
-                <ActionButton to={`/course/${course.id}`}>
-                  {course.progress > 0 ? 'Продолжить обучение →' : 'Начать обучение →'}
-                </ActionButton>
-              </CourseContent>
-            </CourseCard>
-          ))}
-        </CoursesGrid>
-      ) : (
-        <EmptyState>
-          <h3>У вас пока нет купленных курсов</h3>
-          <p>Начните свой путь к новым знаниям прямо сейчас!</p>
-          <ActionButton to="/courses">Выбрать курс</ActionButton>
-        </EmptyState>
-      )}
+              </CourseCard>
+            ))}
+          </CoursesGrid>
+        )}
+      </Wrapper>
     </Container>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

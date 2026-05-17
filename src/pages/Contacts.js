@@ -8,164 +8,137 @@ const fadeIn = keyframes`
 
 const ContactsContainer = styled.div`
   min-height: 100vh;
-  background: #F5F0E8;
-  padding: 100px 24px 60px;
+  background: #FFFFFF;
+  padding: 100px 24px 80px;
 `;
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
 `;
 
-// Хедер с двумя колонками
 const PageHeader = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  margin-bottom: 60px;
-  padding-bottom: 30px;
-  border-bottom: 1px solid #D5CDC0;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
+  text-align: center;
+  margin-bottom: 64px;
   
   h1 {
     font-size: 48px;
-    font-weight: 500;
-    color: #1A1A1A;
+    font-weight: 600;
+    color: #111111;
+    margin-bottom: 16px;
     letter-spacing: -0.02em;
   }
   
   p {
     font-size: 18px;
-    color: #4A4A4A;
-    line-height: 1.6;
-    align-self: flex-end;
-    
-    @media (max-width: 768px) {
-      align-self: flex-start;
-    }
+    color: #555555;
+    max-width: 600px;
+    margin: 0 auto;
   }
 `;
 
-// Форма и контакты поменялись местами
 const ContentGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  gap: 64px;
   margin-bottom: 80px;
 
   @media (max-width: 968px) {
     grid-template-columns: 1fr;
-    gap: 50px;
+    gap: 48px;
   }
 `;
 
-// Форма теперь слева
 const ContactForm = styled.form`
   background: #FFFFFF;
-  border: 1px solid #D5CDC0;
-  padding: 40px;
-  order: 1;
-`;
-
-// Контакты справа
-const ContactInfo = styled.div`
-  order: 2;
+  border: 1px solid #EEEEEE;
+  padding: 48px;
 `;
 
 const SectionTitle = styled.h2`
   font-size: 24px;
   font-weight: 500;
-  margin-bottom: 30px;
-  color: #1A1A1A;
-  letter-spacing: -0.01em;
-  position: relative;
-  display: inline-block;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 40px;
-    height: 2px;
-    background: #2A2A2A;
-  }
+  margin-bottom: 32px;
+  color: #111111;
 `;
 
 const FormGroup = styled.div`
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   
   label {
     display: block;
-    color: #1A1A1A;
+    color: #111111;
     font-weight: 500;
     margin-bottom: 8px;
-    font-size: 14px;
+    font-size: 13px;
   }
   
   input, textarea, select {
     width: 100%;
-    padding: 14px 16px;
-    background: #F5F0E8;
-    border: 1px solid #D5CDC0;
-    color: #1A1A1A;
+    padding: 12px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #EEEEEE;
+    color: #111111;
     font-size: 14px;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     
     &::placeholder {
-      color: #808080;
+      color: #CCCCCC;
     }
     
     &:focus {
       outline: none;
-      border-color: #2A2A2A;
+      border-bottom-color: #111111;
     }
   }
   
   textarea {
+    min-height: 100px;
     resize: vertical;
-    min-height: 120px;
     font-family: inherit;
+  }
+  
+  select {
+    cursor: pointer;
+    option {
+      color: #111111;
+    }
   }
 `;
 
 const SubmitButton = styled.button`
   width: 100%;
-  padding: 16px;
-  background: #2A2A2A;
+  padding: 14px;
+  background: #111111;
   border: none;
   color: #FFFFFF;
   font-weight: 500;
-  font-size: 16px;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
+  font-size: 15px;
+  transition: all 0.2s ease;
   cursor: pointer;
+  margin-top: 8px;
   
   &:hover {
-    background: #1A1A1A;
-    transform: translateY(-2px);
+    background: #000000;
   }
   
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    transform: none;
   }
 `;
 
 const SuccessMessage = styled.div`
-  background: rgba(42, 42, 42, 0.05);
-  border: 1px solid rgba(42, 42, 42, 0.2);
-  color: #2A2A2A;
-  padding: 16px;
+  background: #F8F8F8;
+  color: #2E7D32;
+  padding: 14px;
   text-align: center;
   margin-top: 20px;
-  font-size: 14px;
+  font-size: 13px;
 `;
+
+const ContactInfo = styled.div``;
 
 const ContactList = styled.div`
   display: flex;
@@ -174,46 +147,37 @@ const ContactList = styled.div`
 `;
 
 const ContactItem = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
   padding: 24px;
   background: #FFFFFF;
-  border: 1px solid #D5CDC0;
-  transition: all 0.3s ease;
+  border: 1px solid #EEEEEE;
+  transition: all 0.2s ease;
   
   &:hover {
-    border-color: #2A2A2A;
+    border-color: #CCCCCC;
   }
   
-  .content {
-    flex: 1;
+  h3 {
+    color: #111111;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  
+  p {
+    color: #555555;
+    margin-bottom: 4px;
+    font-size: 14px;
+  }
+  
+  a {
+    color: #111111;
     
-    h3 {
-      color: #1A1A1A;
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 8px;
-    }
-    
-    p {
-      color: #4A4A4A;
-      margin-bottom: 4px;
-      font-size: 14px;
-    }
-    
-    a {
-      color: #2A2A2A;
-      transition: color 0.3s ease;
-      
-      &:hover {
-        color: #1A1A1A;
-      }
+    &:hover {
+      opacity: 0.7;
     }
   }
 `;
 
-// Карта теперь внизу, но в другой компоновке
 const MapSection = styled.div`
   margin: 80px 0;
 `;
@@ -221,22 +185,21 @@ const MapSection = styled.div`
 const MapTitle = styled.h2`
   font-size: 24px;
   font-weight: 500;
-  margin-bottom: 30px;
-  color: #1A1A1A;
+  margin-bottom: 32px;
+  color: #111111;
 `;
 
 const MapPlaceholder = styled.div`
-  height: 300px;
-  background: #FFFFFF;
-  border: 1px solid #D5CDC0;
+  height: 320px;
+  background: #F8F8F8;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4A4A4A;
+  color: #888888;
   font-size: 14px;
+  border: 1px solid #EEEEEE;
 `;
 
-// FAQ в аккордеон вместо сетки
 const FAQSection = styled.div`
   margin-top: 80px;
 `;
@@ -244,14 +207,13 @@ const FAQSection = styled.div`
 const FAQTitle = styled.h2`
   font-size: 24px;
   font-weight: 500;
-  margin-bottom: 30px;
-  color: #1A1A1A;
+  margin-bottom: 32px;
+  color: #111111;
 `;
 
 const FAQItem = styled.div`
-  background: #FFFFFF;
-  border: 1px solid #D5CDC0;
-  margin-bottom: 16px;
+  border: 1px solid #EEEEEE;
+  margin-bottom: 12px;
   
   &:last-child {
     margin-bottom: 0;
@@ -266,29 +228,30 @@ const FAQQuestion = styled.button`
   text-align: left;
   font-size: 16px;
   font-weight: 500;
-  color: #1A1A1A;
+  color: #111111;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all 0.3s ease;
+  transition: background 0.2s ease;
   
   &:hover {
-    background: #EDE5DB;
+    background: #F8F8F8;
   }
   
   .arrow {
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
     transform: ${props => props.$open ? 'rotate(180deg)' : 'rotate(0deg)'};
+    color: #888888;
   }
 `;
 
 const FAQAnswer = styled.div`
   padding: ${props => props.$open ? '0 24px 24px 24px' : '0 24px'};
-  max-height: ${props => props.$open ? '200px' : '0'};
+  max-height: ${props => props.$open ? '300px' : '0'};
   overflow: hidden;
   transition: all 0.3s ease;
-  color: #4A4A4A;
+  color: #555555;
   font-size: 14px;
   line-height: 1.6;
 `;
@@ -316,7 +279,7 @@ const Contacts = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
     setIsSubmitting(false);
     setIsSubmitted(true);
@@ -339,7 +302,7 @@ const Contacts = () => {
     { title: 'Телефон', content: ['+7 (123) 555-55-55', 'Бесплатный звонок по России'] },
     { title: 'Email', content: ['info@korochki.est - общие вопросы', 'support@korochki.est - техподдержка'] },
     { title: 'Адрес', content: ['Великий Новгород', 'Бизнес-центр'] },
-    { title: 'Время работы', content: ['Пн-Пт: 9:00 - 18:00', 'Сб-Вс: 10:00 - 16:00'] }
+    { title: 'Режим работы', content: ['Пн-Пт: 9:00 - 18:00', 'Сб-Вс: 10:00 - 16:00'] }
   ];
 
   const faqItems = [
@@ -347,8 +310,8 @@ const Contacts = () => {
     { question: 'Какие документы я получу после обучения?', answer: 'После успешного окончания курса вы получите удостоверение или диплом установленного образца о дополнительном профессиональном образовании.' },
     { question: 'Можно ли оплатить курс в рассрочку?', answer: 'Да, мы предоставляем возможность оплаты в рассрочку на большинство курсов. Подробности уточняйте у наших менеджеров.' },
     { question: 'Есть ли возможность вернуть деньги?', answer: 'Да, мы предоставляем возврат средств в течение 14 дней после начала курса, если обучение не подошло.' },
-    { question: 'Сколько длится обучение на курсах?', answer: 'Продолжительность обучения зависит от выбранного курса - от 1 до 6 месяцев. Каждый курс имеет четкий учебный план и график занятий.' },
-    { question: 'Предоставляется ли доступ к материалам после окончания курса?', answer: 'Да, после завершения обучения у вас остается пожизненный доступ ко всем материалам курса, включая видеоуроки, презентации и дополнительные ресурсы.' }
+    { question: 'Сколько длится обучение?', answer: 'Продолжительность обучения зависит от выбранного курса - от 1 до 6 месяцев.' },
+    { question: 'Будет ли доступ к материалам после окончания?', answer: 'Да, после завершения обучения у вас остаётся пожизненный доступ ко всем материалам курса.' }
   ];
 
   return (
@@ -356,7 +319,7 @@ const Contacts = () => {
       <Container>
         <PageHeader>
           <h1>Контакты</h1>
-          <p>Есть вопросы? Мы всегда рады помочь и ответим в ближайшее время</p>
+          <p>Есть вопросы? Мы всегда готовы помочь</p>
         </PageHeader>
 
         <ContentGrid>
@@ -446,12 +409,10 @@ const Contacts = () => {
             <ContactList>
               {contactItems.map((item, index) => (
                 <ContactItem key={index}>
-                  <div className="content">
-                    <h3>{item.title}</h3>
-                    {item.content.map((line, i) => (
-                      <p key={i}>{line}</p>
-                    ))}
-                  </div>
+                  <h3>{item.title}</h3>
+                  {item.content.map((line, i) => (
+                    <p key={i}>{line}</p>
+                  ))}
                 </ContactItem>
               ))}
             </ContactList>
@@ -466,7 +427,7 @@ const Contacts = () => {
         </MapSection>
 
         <FAQSection>
-          <FAQTitle>Частые вопросы</FAQTitle>
+          <FAQTitle>Часто задаваемые вопросы</FAQTitle>
           {faqItems.map((item, index) => (
             <FAQItem key={index}>
               <FAQQuestion onClick={() => toggleFaq(index)} $open={openFaq === index}>

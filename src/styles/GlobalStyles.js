@@ -9,9 +9,10 @@ export const GlobalStyles = createGlobalStyle`
 
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-    background-color: #F5F0E8;
-    color: #2A2A2A;
-    line-height: 1.6;
+    background: #0A0A0A;
+    color: #EDEDED;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
 
   a {
@@ -27,25 +28,13 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   .container {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 24px;
   }
-  
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
 
-  ::-webkit-scrollbar-track {
-    background: #E8E0D5;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #2A2A2A;
-    border-radius: 3px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #1A1A1A;
+  ::selection {
+    background: #00FF88;
+    color: #0A0A0A;
   }
 `;

@@ -1,52 +1,49 @@
-
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useAuth } from '../context/AuthContext'
 
 const Container = styled.div`
   max-width: 800px;
-  margin: 100px auto 60px;
+  margin: 100px auto 80px;
   padding: 0 24px;
 `
 
 const ProfileHeader = styled.div`
-  text-align: left;
-  margin-bottom: 50px;
-  padding-bottom: 30px;
-  border-bottom: 1px solid #2A2A2A;
+  margin-bottom: 48px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #EEEEEE;
 `
 
 const ProfileTitle = styled.h1`
-  font-size: 36px;
-  font-weight: 500;
-  color: #FFFFFF;
+  font-size: 32px;
+  font-weight: 600;
+  color: #111111;
   letter-spacing: -0.02em;
 `
 
 const ProfileCard = styled.div`
-  background: #141414;
-  border: 1px solid #2A2A2A;
-  padding: 40px;
+  background: #FFFFFF;
+  border: 1px solid #EEEEEE;
+  padding: 48px;
 `
 
 const AvatarSection = styled.div`
   display: flex;
   align-items: center;
   gap: 24px;
-  margin-bottom: 30px;
-  padding-bottom: 30px;
-  border-bottom: 1px solid #2A2A2A;
+  margin-bottom: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid #EEEEEE;
 `
 
 const Avatar = styled.div`
   width: 80px;
   height: 80px;
-  border-radius: 50%;
-  background: #D4C5B0;
+  background: #F5F5F5;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0A0A0A;
+  color: #888888;
   font-size: 32px;
   font-weight: 500;
 `
@@ -56,41 +53,42 @@ const AvatarInfo = styled.div`
 `
 
 const AvatarName = styled.h3`
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 500;
-  color: #FFFFFF;
-  margin-bottom: 6px;
+  color: #111111;
+  margin-bottom: 4px;
 `
 
 const AvatarEmail = styled.p`
-  color: #B0B0B0;
+  color: #888888;
   font-size: 14px;
 `
 
 const FormGroup = styled.div`
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 `
 
 const Label = styled.label`
   display: block;
-  color: #FFFFFF;
+  color: #111111;
   margin-bottom: 8px;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 13px;
 `
 
 const Input = styled.input`
   width: 100%;
-  padding: 14px 16px;
-  background: #0A0A0A;
-  border: 1px solid #2A2A2A;
-  color: #FFFFFF;
+  padding: 12px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #EEEEEE;
+  color: #111111;
   font-size: 15px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 
   &:focus {
     outline: none;
-    border-color: #D4C5B0;
+    border-bottom-color: #111111;
   }
 
   &:disabled {
@@ -100,23 +98,22 @@ const Input = styled.input`
 `
 
 const Button = styled.button`
-  padding: 14px 32px;
-  background: #D4C5B0;
+  padding: 12px 32px;
+  background: #111111;
   border: none;
-  color: #0A0A0A;
+  color: #FFFFFF;
   font-weight: 500;
-  font-size: 15px;
-  transition: all 0.3s ease;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  margin-top: 8px;
 
   &:hover {
-    background: #C4B5A0;
-    transform: translateY(-2px);
+    background: #000000;
   }
 
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    transform: none;
   }
 `
 
@@ -124,18 +121,16 @@ const Message = styled.div`
   padding: 14px;
   margin-bottom: 24px;
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
 
   &.success {
-    background: rgba(212, 197, 176, 0.1);
-    color: #D4C5B0;
-    border: 1px solid rgba(212, 197, 176, 0.3);
+    background: #F8F8F8;
+    color: #2E7D32;
   }
 
   &.error {
-    background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.3);
+    background: #F8F8F8;
+    color: #D32F2F;
   }
 `
 
@@ -160,7 +155,7 @@ const Profile = () => {
 
     try {
       await updateUserProfile(formData)
-      setMessage({ type: 'success', text: 'Профиль успешно обновлен!' })
+      setMessage({ type: 'success', text: 'Профиль успешно обновлён' })
     } catch (error) {
       setMessage({ type: 'error', text: 'Ошибка при обновлении профиля' })
     } finally {
@@ -208,12 +203,12 @@ const Profile = () => {
               name="displayName"
               value={formData.displayName}
               onChange={handleChange}
-              placeholder="Введите ваше имя"
+              placeholder="Введите ваше полное имя"
             />
           </FormGroup>
 
           <FormGroup>
-            <Label htmlFor="phone">Телефон</Label>
+            <Label htmlFor="phone">Номер телефона</Label>
             <Input
               type="tel"
               id="phone"

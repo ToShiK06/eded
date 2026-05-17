@@ -8,238 +8,190 @@ const fadeIn = keyframes`
 
 const AboutContainer = styled.div`
   min-height: 100vh;
-  background: #F5F0E8;
-  padding: 100px 24px 60px;
+  background: #FFFFFF;
+  padding: 100px 24px 80px;
 `;
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
 `;
 
-// Меняем хедер - теперь с подзаголовком слева
 const PageHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 60px;
-  padding-bottom: 30px;
-  border-bottom: 1px solid #D5CDC0;
-  animation: ${fadeIn} 0.6s ease-out;
-  flex-wrap: wrap;
-  gap: 20px;
+  text-align: center;
+  margin-bottom: 64px;
   
-  .title-section {
-    h1 {
-      font-size: 48px;
-      font-weight: 500;
-      color: #1A1A1A;
-      margin-bottom: 8px;
-      letter-spacing: -0.02em;
-    }
+  h1 {
+    font-size: 48px;
+    font-weight: 600;
+    color: #111111;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
   }
   
-  .subtitle-section {
-    p {
-      font-size: 18px;
-      color: #4A4A4A;
-      max-width: 400px;
-      line-height: 1.6;
-      text-align: right;
-    }
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-    
-    .subtitle-section p {
-      text-align: left;
-    }
+  p {
+    font-size: 18px;
+    color: #555555;
+    max-width: 600px;
+    margin: 0 auto;
   }
 `;
 
-// Миссия - теперь в 2 колонки с большим заголовком
 const MissionSection = styled.section`
-  margin-bottom: 80px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: start;
+  gap: 64px;
+  margin-bottom: 80px;
   
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 40px;
   }
 `;
 
-const MissionLeft = styled.div`
+const MissionContent = styled.div`
   h2 {
-    font-size: 36px;
-    font-weight: 500;
-    color: #1A1A1A;
+    font-size: 32px;
+    font-weight: 600;
+    color: #111111;
     margin-bottom: 24px;
     letter-spacing: -0.02em;
   }
   
   p {
     font-size: 16px;
-    color: #4A4A4A;
-    line-height: 1.8;
+    color: #555555;
+    line-height: 1.7;
     margin-bottom: 20px;
   }
 `;
 
-const MissionRight = styled.div`
-  background: #FFFFFF;
-  border: 1px solid #D5CDC0;
-  padding: 40px;
+const StatsGrid = styled.div`
+  background: #F8F8F8;
+  padding: 48px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+`;
+
+const StatBlock = styled.div`
+  .value {
+    font-size: 40px;
+    font-weight: 600;
+    color: #111111;
+    margin-bottom: 8px;
+  }
   
-  .stat-block {
-    margin-bottom: 30px;
-    
-    &:last-child {
-      margin-bottom: 0;
-    }
-    
-    .stat-value {
-      font-size: 48px;
-      font-weight: 500;
-      color: #2A2A2A;
-      margin-bottom: 8px;
-    }
-    
-    .stat-desc {
-      color: #4A4A4A;
-      font-size: 14px;
-      line-height: 1.5;
-    }
+  .label {
+    color: #666666;
+    font-size: 13px;
+    letter-spacing: 0.5px;
   }
 `;
 
-// Команда - новая сетка 2x2
 const TeamSection = styled.section`
   margin: 80px 0;
 `;
 
-const TeamTitle = styled.h2`
-  font-size: 36px;
-  font-weight: 500;
-  color: #1A1A1A;
-  margin-bottom: 50px;
-  letter-spacing: -0.02em;
+const SectionTitle = styled.h2`
+  font-size: 32px;
+  font-weight: 600;
+  color: #111111;
+  margin-bottom: 48px;
   text-align: center;
+  letter-spacing: -0.02em;
 `;
 
 const TeamGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
   
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: 640px) {
     grid-template-columns: 1fr;
   }
 `;
 
 const TeamCard = styled.div`
-  background: #FFFFFF;
-  border: 1px solid #D5CDC0;
-  padding: 40px;
-  display: flex;
-  gap: 30px;
-  align-items: flex-start;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    border-color: #2A2A2A;
-    transform: translateY(-4px);
-  }
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-  }
+  text-align: center;
 `;
 
 const TeamAvatar = styled.div`
-  width: 100px;
-  height: 100px;
-  background: #EDE5DB;
+  width: 120px;
+  height: 120px;
+  background: #F5F5F5;
   border-radius: 50%;
+  margin: 0 auto 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 500;
-  color: #2A2A2A;
-  flex-shrink: 0;
+  color: #AAAAAA;
 `;
 
-const TeamInfo = styled.div`
-  flex: 1;
-  
-  h3 {
-    font-size: 24px;
-    font-weight: 500;
-    color: #1A1A1A;
-    margin-bottom: 8px;
-  }
-  
-  .role {
-    color: #2A2A2A;
-    font-weight: 500;
-    margin-bottom: 16px;
-    font-size: 14px;
-    letter-spacing: 1px;
-  }
-  
-  .bio {
-    color: #4A4A4A;
-    line-height: 1.6;
-    font-size: 14px;
-  }
+const TeamName = styled.h3`
+  font-size: 18px;
+  font-weight: 600;
+  color: #111111;
+  margin-bottom: 8px;
 `;
 
-// Ценности - горизонтальный скролл
+const TeamRole = styled.div`
+  color: #888888;
+  font-size: 13px;
+  margin-bottom: 12px;
+`;
+
+const TeamBio = styled.p`
+  color: #555555;
+  font-size: 14px;
+  line-height: 1.6;
+`;
+
 const ValuesSection = styled.section`
   margin: 80px 0;
-  overflow-x: auto;
 `;
 
 const ValuesGrid = styled.div`
-  display: flex;
-  gap: 30px;
-  min-width: 800px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const ValueCard = styled.div`
-  flex: 1;
-  background: #FFFFFF;
-  border: 1px solid #D5CDC0;
-  padding: 40px 30px;
   text-align: center;
-  transition: all 0.3s ease;
+  padding: 40px 24px;
+  background: #FFFFFF;
+  border: 1px solid #EEEEEE;
+  transition: all 0.2s ease;
   
   &:hover {
-    border-color: #2A2A2A;
+    border-color: #CCCCCC;
     transform: translateY(-4px);
-  }
-  
-  .value-icon {
-    font-size: 48px;
-    margin-bottom: 20px;
   }
   
   h3 {
     font-size: 20px;
     font-weight: 500;
-    color: #1A1A1A;
+    color: #111111;
     margin-bottom: 16px;
   }
   
   p {
-    color: #4A4A4A;
+    color: #555555;
     font-size: 14px;
     line-height: 1.6;
   }
@@ -247,78 +199,71 @@ const ValueCard = styled.div`
 
 const About = () => {
   const stats = [
-    { value: '10,000+', desc: 'Выпускников по всей России' },
-    { value: '150+', desc: 'Экспертных курсов' },
-    { value: '95%', desc: 'Студентов рекомендуют нас' },
-    { value: '50+', desc: 'Преподавателей-практиков' }
+    { value: '10 000+', label: 'ВЫПУСКНИКОВ' },
+    { value: '150+', label: 'КУРСОВ' },
+    { value: '95%', label: 'ДОВОЛЬНЫ' },
+    { value: '50+', label: 'ЭКСПЕРТОВ' }
   ];
 
   const teamMembers = [
-    { name: 'Анна Петрова', role: 'Основатель & CEO', bio: '15+ лет в IT-образовании, экс-руководитель образовательных программ в крупнейших EdTech-компаниях.', avatar: 'АП' },
-    { name: 'Максим Иванов', role: 'CTO', bio: 'Fullstack разработчик с 10-летним опытом, эксперт в e-learning и масштабировании образовательных платформ.', avatar: 'МИ' },
-    { name: 'Елена Смирнова', role: 'Head of Education', bio: 'Педагог с 12-летним стажем, специалист по дистанционному обучению и разработке учебных программ.', avatar: 'ЕС' },
-    { name: 'Дмитрий Козлов', role: 'Product Manager', bio: 'Эксперт в управлении продуктами, создал более 20 успешных образовательных продуктов.', avatar: 'ДК' }
+    { name: 'Анна Петрова', role: 'Основатель и CEO', bio: 'Более 15 лет в EdTech, экс-руководитель образовательных программ.', avatar: 'АП' },
+    { name: 'Максим Иванов', role: 'Технический директор', bio: 'Fullstack разработчик с 10-летним опытом.', avatar: 'МИ' },
+    { name: 'Елена Смирнова', role: 'Руководитель образования', bio: 'Педагог с 12-летним стажем, эксперт в дистанционном обучении.', avatar: 'ЕС' },
+    { name: 'Дмитрий Козлов', role: 'Продуктовый менеджер', bio: 'Эксперт в управлении продуктами, создал более 20 успешных продуктов.', avatar: 'ДК' }
   ];
 
   const values = [
-    { icon: '', title: 'Качество', desc: 'Только актуальные знания от практикующих экспертов' },
-    { icon: '', title: 'Инновации', desc: 'Современные методики и технологии обучения' },
-    { icon: '', title: 'Поддержка', desc: 'Персональное сопровождение каждого студента' },
-    { icon: '', title: 'Результат', desc: 'Быстрый выход на рынок труда' }
+    { title: 'Качество', description: 'Только актуальные знания от практикующих экспертов' },
+    { title: 'Инновации', description: 'Современные методики и технологии обучения' },
+    { title: 'Поддержка', description: 'Персональное сопровождение каждого студента' },
+    { title: 'Результат', description: 'Быстрый выход на рынок труда' }
   ];
 
   return (
     <AboutContainer>
       <Container>
         <PageHeader>
-          <div className="title-section">
-            <h1>О платформе</h1>
-          </div>
-          <div className="subtitle-section">
-            <p>Миссия, ценности и команда Корочки.есть</p>
-          </div>
+          <h1>О платформе</h1>
+          <p>Наша миссия, ценности и команда</p>
         </PageHeader>
 
         <MissionSection>
-          <MissionLeft>
-            <h2>Наша миссия — сделать IT-образование доступным</h2>
-            <p>«Корочки.есть» — инновационная образовательная платформа, созданная для того, чтобы качественное IT-образование стало доступным для каждого, независимо от местоположения и начального уровня.</p>
+          <MissionContent>
+            <h2>Делаем IT-образование доступным</h2>
+            <p>Корочки.есть — инновационная образовательная платформа, созданная для того, чтобы качественное IT-образование стало доступным для каждого, независимо от местоположения и начального уровня.</p>
             <p>Мы верим, что современные технологии должны служить развитию человеческого потенциала и помогать людям строить успешную карьеру в digital-сфере.</p>
-          </MissionLeft>
-          <MissionRight>
+          </MissionContent>
+          <StatsGrid>
             {stats.map((stat, index) => (
-              <div key={index} className="stat-block">
-                <div className="stat-value">{stat.value}</div>
-                <div className="stat-desc">{stat.desc}</div>
-              </div>
+              <StatBlock key={index}>
+                <div className="value">{stat.value}</div>
+                <div className="label">{stat.label}</div>
+              </StatBlock>
             ))}
-          </MissionRight>
+          </StatsGrid>
         </MissionSection>
 
         <ValuesSection>
-          <TeamTitle>Наши ценности</TeamTitle>
+          <SectionTitle>Наши ценности</SectionTitle>
           <ValuesGrid>
             {values.map((value, index) => (
               <ValueCard key={index}>
-                <div className="value-icon">{value.icon}</div>
                 <h3>{value.title}</h3>
-                <p>{value.desc}</p>
+                <p>{value.description}</p>
               </ValueCard>
             ))}
           </ValuesGrid>
         </ValuesSection>
 
         <TeamSection>
-          <TeamTitle>Команда профессионалов</TeamTitle>
+          <SectionTitle>Команда профессионалов</SectionTitle>
           <TeamGrid>
             {teamMembers.map((member, index) => (
               <TeamCard key={index}>
                 <TeamAvatar>{member.avatar}</TeamAvatar>
-                <TeamInfo>
-                  <h3>{member.name}</h3>
-                  <div className="role">{member.role}</div>
-                  <div className="bio">{member.bio}</div>
-                </TeamInfo>
+                <TeamName>{member.name}</TeamName>
+                <TeamRole>{member.role}</TeamRole>
+                <TeamBio>{member.bio}</TeamBio>
               </TeamCard>
             ))}
           </TeamGrid>

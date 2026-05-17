@@ -8,92 +8,85 @@ const fadeIn = keyframes`
 
 const ReviewsContainer = styled.div`
   min-height: 100vh;
-  background: #F5F0E8;
-  padding: 100px 24px 60px;
+  background: #FFFFFF;
+  padding: 100px 24px 80px;
 `;
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
 `;
 
 const PageHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 50px;
-  padding-bottom: 30px;
-  border-bottom: 1px solid #D5CDC0;
-  flex-wrap: wrap;
-  gap: 20px;
+  text-align: center;
+  margin-bottom: 64px;
   
   h1 {
     font-size: 48px;
-    font-weight: 500;
-    color: #1A1A1A;
+    font-weight: 600;
+    color: #111111;
+    margin-bottom: 16px;
     letter-spacing: -0.02em;
   }
   
   p {
     font-size: 18px;
-    color: #4A4A4A;
-    max-width: 400px;
+    color: #555555;
   }
 `;
 
-// Статистика в виде горизонтальных полос
 const StatsSection = styled.div`
-  margin-bottom: 60px;
+  margin-bottom: 64px;
 `;
 
 const StatsGrid = styled.div`
-  display: flex;
-  gap: 40px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
   
   @media (max-width: 768px) {
-    flex-direction: column;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
   }
 `;
 
 const StatCard = styled.div`
-  flex: 1;
-  background: #FFFFFF;
-  border: 1px solid #D5CDC0;
-  padding: 30px;
   text-align: center;
+  padding: 32px;
+  background: #F8F8F8;
   
   .stat-number {
-    font-size: 42px;
-    font-weight: 500;
-    color: #2A2A2A;
+    font-size: 40px;
+    font-weight: 600;
+    color: #111111;
     margin-bottom: 8px;
   }
   
   .stat-label {
-    color: #4A4A4A;
-    font-size: 13px;
-    text-transform: uppercase;
+    color: #666666;
+    font-size: 12px;
     letter-spacing: 1px;
   }
 `;
 
-// Фильтры в виде radio кнопок
 const FilterSection = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 `;
 
 const FilterTitle = styled.h3`
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
-  color: #1A1A1A;
-  margin-bottom: 16px;
+  color: #888888;
+  margin-bottom: 20px;
   letter-spacing: 1px;
 `;
 
 const FilterOptions = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 24px;
   flex-wrap: wrap;
 `;
 
@@ -104,36 +97,35 @@ const FilterRadio = styled.label`
   cursor: pointer;
   
   input {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     cursor: pointer;
-    accent-color: #2A2A2A;
+    accent-color: #111111;
   }
   
   span {
-    color: ${props => props.checked ? '#2A2A2A' : '#4A4A4A'};
+    color: ${props => props.checked ? '#111111' : '#666666'};
     font-size: 14px;
     font-weight: ${props => props.checked ? '500' : '400'};
   }
 `;
 
-// Отзывы в виде списка с аватарами
 const ReviewsList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  margin-bottom: 60px;
+  margin-bottom: 64px;
 `;
 
 const ReviewCard = styled.div`
   background: #FFFFFF;
-  border: 1px solid #D5CDC0;
+  border: 1px solid #EEEEEE;
   padding: 32px;
-  transition: all 0.3s ease;
-  animation: ${fadeIn} 0.5s ease-out;
+  transition: all 0.2s ease;
+  animation: ${fadeIn} 0.4s ease-out;
   
   &:hover {
-    border-color: #2A2A2A;
+    border-color: #CCCCCC;
   }
 `;
 
@@ -146,70 +138,67 @@ const ReviewHeader = styled.div`
 `;
 
 const ReviewAvatar = styled.div`
-  width: 50px;
-  height: 50px;
-  background: #EDE5DB;
-  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  background: #F5F5F5;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 500;
-  color: #2A2A2A;
+  color: #888888;
 `;
 
 const ReviewMeta = styled.div`
   flex: 1;
   
   h3 {
-    font-size: 18px;
-    font-weight: 500;
-    color: #1A1A1A;
+    font-size: 16px;
+    font-weight: 600;
+    color: #111111;
     margin-bottom: 4px;
   }
   
   .course {
-    color: #2A2A2A;
-    font-size: 13px;
-    margin-bottom: 4px;
+    color: #888888;
+    font-size: 12px;
+    margin-bottom: 2px;
   }
   
   .date {
-    color: #808080;
-    font-size: 12px;
+    color: #AAAAAA;
+    font-size: 11px;
   }
 `;
 
 const ReviewRating = styled.div`
-  color: #2A2A2A;
-  font-size: 16px;
+  color: #111111;
+  font-size: 14px;
   letter-spacing: 2px;
 `;
 
 const ReviewText = styled.p`
-  color: #4A4A4A;
+  color: #555555;
   line-height: 1.7;
   font-size: 15px;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #EDE5DB;
+  border-top: 1px solid #F0F0F0;
 `;
 
-// Форма добавления отзыва
 const AddReviewSection = styled.div`
-  background: #FFFFFF;
-  border: 1px solid #D5CDC0;
-  padding: 40px;
+  background: #F8F8F8;
+  padding: 48px;
   
   h2 {
     font-size: 24px;
     font-weight: 500;
-    color: #1A1A1A;
+    color: #111111;
     margin-bottom: 8px;
   }
   
   p {
-    color: #4A4A4A;
-    margin-bottom: 30px;
+    color: #555555;
+    margin-bottom: 32px;
     font-size: 14px;
   }
 `;
@@ -220,13 +209,13 @@ const RatingStars = styled.div`
   margin-bottom: 24px;
   
   .star {
-    font-size: 28px;
+    font-size: 24px;
     cursor: pointer;
-    color: ${props => props.$hovered ? '#2A2A2A' : '#D5CDC0'};
-    transition: all 0.2s ease;
+    color: #DDDDDD;
+    transition: color 0.2s ease;
     
     &:hover {
-      color: #2A2A2A;
+      color: #111111;
     }
   }
 `;
@@ -249,24 +238,30 @@ const FormRow = styled.div`
 
 const FormInput = styled.input`
   width: 100%;
-  padding: 14px 16px;
-  background: #F5F0E8;
-  border: 1px solid #D5CDC0;
-  color: #1A1A1A;
+  padding: 12px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #EEEEEE;
+  color: #111111;
   font-size: 14px;
   
   &:focus {
     outline: none;
-    border-color: #2A2A2A;
+    border-bottom-color: #111111;
+  }
+  
+  &::placeholder {
+    color: #CCCCCC;
   }
 `;
 
 const FormTextarea = styled.textarea`
   width: 100%;
-  padding: 14px 16px;
-  background: #F5F0E8;
-  border: 1px solid #D5CDC0;
-  color: #1A1A1A;
+  padding: 12px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #EEEEEE;
+  color: #111111;
   font-size: 14px;
   resize: vertical;
   min-height: 100px;
@@ -274,13 +269,17 @@ const FormTextarea = styled.textarea`
   
   &:focus {
     outline: none;
-    border-color: #2A2A2A;
+    border-bottom-color: #111111;
+  }
+  
+  &::placeholder {
+    color: #CCCCCC;
   }
 `;
 
 const SubmitButton = styled.button`
-  padding: 14px 32px;
-  background: #2A2A2A;
+  padding: 12px 32px;
+  background: #111111;
   border: none;
   color: #FFFFFF;
   font-weight: 500;
@@ -289,12 +288,12 @@ const SubmitButton = styled.button`
   align-self: flex-start;
   
   &:hover {
-    background: #1A1A1A;
+    background: #000000;
   }
 `;
 
 const Reviews = () => {
-  const [selectedCategory, setSelectedCategory] = useState('Все');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
 
@@ -307,24 +306,15 @@ const Reviews = () => {
   ];
 
   const reviews = [
-    { id: 1, name: 'Анна Козлова', avatar: 'АК', course: 'Fullstack JavaScript', category: 'programming', rating: 5, date: '15 декабря 2024', text: 'Прошла курс Fullstack JavaScript и уже через 2 месяца нашла работу джуном! Преподаватели - настоящие профессионалы, много практики и поддержки. Очень благодарна команде Корочки.есть!' },
-    { id: 2, name: 'Дмитрий Соколов', avatar: 'ДС', course: 'UX/UI Дизайн', category: 'design', rating: 5, date: '10 декабря 2024', text: 'Отличный курс для начинающих дизайнеров. Все очень структурированно, много реальных кейсов. Преподаватель всегда на связи и помогает.' },
-    { id: 3, name: 'Мария Иванова', avatar: 'МИ', course: 'Digital Marketing', category: 'marketing', rating: 4, date: '5 декабря 2024', text: 'Очень полезный курс, много практических инструментов. Немного не хватило времени на некоторые темы, но в целом очень довольна. Рекомендую!' },
-    { id: 4, name: 'Сергей Петров', avatar: 'СП', course: 'Python для анализа данных', category: 'programming', rating: 5, date: '28 ноября 2024', text: 'Курс превзошел ожидания! Отличный баланс теории и практики. Теперь уверенно работаю с данными.' }
+    { id: 1, name: 'Анна Козлова', avatar: 'АК', course: 'Fullstack JavaScript', category: 'programming', rating: 5, date: '15 декабря 2024', text: 'Прошла курс Fullstack JavaScript и уже через 2 месяца нашла работу джуниором. Преподаватели — настоящие профессионалы, много практики и поддержки. Очень благодарна команде.' },
+    { id: 2, name: 'Дмитрий Соколов', avatar: 'ДС', course: 'UX/UI Дизайн', category: 'design', rating: 5, date: '10 декабря 2024', text: 'Отличный курс для начинающих дизайнеров. Всё очень структурированно, много реальных кейсов. Преподаватель всегда на связи и помогает.' },
+    { id: 3, name: 'Мария Иванова', avatar: 'МИ', course: 'Digital-маркетинг', category: 'marketing', rating: 4, date: '5 декабря 2024', text: 'Очень полезный курс, много практических инструментов. Немного не хватило времени на некоторые темы, но в целом очень довольна. Рекомендую!' },
+    { id: 4, name: 'Сергей Петров', avatar: 'СП', course: 'Python для анализа данных', category: 'programming', rating: 5, date: '28 ноября 2024', text: 'Курс превзошёл ожидания. Отличный баланс теории и практики. Теперь уверенно работаю с данными.' }
   ];
-
-  const getCategoryFilter = (categoryId) => {
-    if (categoryId === 'all') return true;
-    const map = { programming: 'Программирование', design: 'Дизайн', marketing: 'Маркетинг', management: 'Менеджмент' };
-    return reviews.filter(r => r.category === categoryId);
-  };
 
   const filteredReviews = selectedCategory === 'all' 
     ? reviews 
-    : reviews.filter(review => {
-        const map = { programming: 'Программирование', design: 'Дизайн', marketing: 'Маркетинг', management: 'Менеджмент' };
-        return review.category === selectedCategory;
-      });
+    : reviews.filter(review => review.category === selectedCategory);
 
   const renderStars = (rating) => {
     return '★'.repeat(rating) + '☆'.repeat(5 - rating);
@@ -340,10 +330,10 @@ const Reviews = () => {
 
         <StatsSection>
           <StatsGrid>
-            <StatCard><div className="stat-number">4.9/5</div><div className="stat-label">Средняя оценка</div></StatCard>
-            <StatCard><div className="stat-number">2,500+</div><div className="stat-label">Отзывов</div></StatCard>
-            <StatCard><div className="stat-number">95%</div><div className="stat-label">Рекомендуют</div></StatCard>
-            <StatCard><div className="stat-number">10,000+</div><div className="stat-label">Выпускников</div></StatCard>
+            <StatCard><div className="stat-number">4.9/5</div><div className="stat-label">СРЕДНЯЯ ОЦЕНКА</div></StatCard>
+            <StatCard><div className="stat-number">2 500+</div><div className="stat-label">ОТЗЫВОВ</div></StatCard>
+            <StatCard><div className="stat-number">95%</div><div className="stat-label">РЕКОМЕНДУЮТ</div></StatCard>
+            <StatCard><div className="stat-number">10 000+</div><div className="stat-label">ВЫПУСКНИКОВ</div></StatCard>
           </StatsGrid>
         </StatsSection>
 
@@ -394,7 +384,7 @@ const Reviews = () => {
             
             <FormInput type="text" placeholder="Название курса" />
             
-            <RatingStars $hovered={hoverRating}>
+            <RatingStars>
               {[1, 2, 3, 4, 5].map(star => (
                 <span
                   key={star}
@@ -402,7 +392,7 @@ const Reviews = () => {
                   onMouseEnter={() => setHoverRating(star)}
                   onMouseLeave={() => setHoverRating(0)}
                   onClick={() => setRating(star)}
-                  style={{ color: star <= (hoverRating || rating) ? '#2A2A2A' : '#D5CDC0' }}
+                  style={{ color: star <= (hoverRating || rating) ? '#111111' : '#DDDDDD' }}
                 >
                   ★
                 </span>

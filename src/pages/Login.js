@@ -1,230 +1,165 @@
-// Login.js
-import React, { useState } from 'react'
-import styled, { keyframes } from 'styled-components'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../src/context/AuthContext'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
-
-const AuthContainer = styled.div`
+const Container = styled.div`
   min-height: 100vh;
-  background: #F5F0E8;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 100px 24px;
+  padding: 120px 24px;
 `;
 
-const AuthCard = styled.div`
-  background: #FFFFFF;
-  border: 1px solid #D5CDC0;
-  padding: 50px;
+const Card = styled.div`
+  max-width: 400px;
   width: 100%;
-  max-width: 480px;
-  animation: ${fadeIn} 0.6s ease-out;
-
-  @media (max-width: 576px) {
-    padding: 32px;
-  }
+  padding: 48px;
+  background: #1A1A1A;
+  border: 1px solid #2A2A2A;
 `;
 
-const AuthTitle = styled.h1`
-  font-size: 32px;
-  font-weight: 500;
-  color: #1A1A1A;
+const Title = styled.h1`
+  font-size: 28px;
+  font-weight: 600;
   margin-bottom: 8px;
-  letter-spacing: -0.02em;
 `;
 
-const AuthSubtitle = styled.p`
-  color: #4A4A4A;
+const Subtitle = styled.p`
+  color: #888888;
   font-size: 14px;
   margin-bottom: 32px;
 `;
 
-const AuthForm = styled.form`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 24px;
 `;
 
-const FormGroup = styled.div`
-  position: relative;
-`;
+const InputGroup = styled.div``;
 
-const FormLabel = styled.label`
+const Label = styled.label`
   display: block;
+  font-size: 13px;
   margin-bottom: 8px;
-  color: #1A1A1A;
-  font-weight: 500;
-  font-size: 14px;
+  color: #888888;
 `;
 
-const FormInput = styled.input`
+const Input = styled.input`
   width: 100%;
-  padding: 14px 16px;
-  background: #F5F0E8;
-  border: 1px solid ${props => props.$hasError ? '#ef4444' : '#D5CDC0'};
-  color: #1A1A1A;
+  padding: 12px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #2A2A2A;
+  color: #EDEDED;
   font-size: 15px;
-  transition: all 0.3s ease;
-
+  
   &:focus {
     outline: none;
-    border-color: ${props => props.$hasError ? '#ef4444' : '#2A2A2A'};
-  }
-
-  &::placeholder {
-    color: #808080;
+    border-bottom-color: #00FF88;
   }
 `;
 
-const SubmitButton = styled.button`
-  padding: 16px;
-  background: #2A2A2A;
-  border: none;
-  color: #FFFFFF;
-  font-weight: 500;
-  font-size: 16px;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  margin-top: 8px;
+const Button = styled.button`
+  padding: 14px;
+  background: #00FF88;
+  color: #0A0A0A;
+  font-weight: 600;
+  font-size: 15px;
+  margin-top: 16px;
   cursor: pointer;
-
-  &:hover:not(:disabled) {
-    background: #1A1A1A;
-    transform: translateY(-2px);
+  
+  &:hover {
+    background: #00CC6E;
   }
-
+  
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
 `;
 
-const AuthFooter = styled.div`
+const Footer = styled.div`
   text-align: center;
-  margin-top: 8px;
-  color: #4A4A4A;
-  font-size: 14px;
-`;
-
-const AuthLink = styled(Link)`
-  color: #2A2A2A;
-  text-decoration: none;
-  font-weight: 500;
-  margin-left: 8px;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #1A1A1A;
-  }
-`;
-
-const ForgotPassword = styled(Link)`
-  display: block;
-  text-align: right;
-  color: #808080;
-  text-decoration: none;
+  margin-top: 24px;
   font-size: 13px;
-  margin-top: 8px;
-  transition: color 0.3s ease;
+  color: #888888;
+`;
 
+const StyledLink = styled(Link)`
+  color: #00FF88;
+  margin-left: 8px;
+  
   &:hover {
-    color: #2A2A2A;
+    text-decoration: underline;
   }
 `;
 
 const ErrorMessage = styled.div`
-  color: #ef4444;
+  color: #FF4444;
   font-size: 13px;
-  margin-top: 6px;
+  margin-top: 8px;
 `;
 
 const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const { login } = useAuth()
-  const navigate = useNavigate()
-
-  const handleSubmit = async e => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError('')
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    
     try {
-      const result = await login(email, password)
-
+      const result = await login(email, password);
       if (result.success) {
-        if (email === 'admin@admin.da') {
-          navigate('/admin')
-        } else {
-          navigate('/courses')
-        }
+        navigate(email === 'admin@admin.da' ? '/admin' : '/dashboard');
       } else {
-        setError('Неверный email или пароль')
+        setError('Неверный email или пароль');
       }
-    } catch (error) {
-      setError('Ошибка при входе. Проверьте данные')
+    } catch {
+      setError('Ошибка при входе');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
-    <AuthContainer>
-      <AuthCard>
-        <AuthTitle>Вход</AuthTitle>
-        <AuthSubtitle>Войдите в свой аккаунт</AuthSubtitle>
-
-        <AuthForm onSubmit={handleSubmit}>
+    <Container>
+      <Card>
+        <Title>Вход</Title>
+        <Subtitle>Войдите в свой аккаунт</Subtitle>
+        
+        <Form onSubmit={handleSubmit}>
           {error && <ErrorMessage>{error}</ErrorMessage>}
-
-          <FormGroup>
-            <FormLabel>Email</FormLabel>
-            <FormInput
-              type="email"
-              placeholder="your@email.com"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required
-              disabled={isLoading}
-              $hasError={!!error}
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <FormLabel>Пароль</FormLabel>
-            <FormInput
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-              disabled={isLoading}
-              $hasError={!!error}
-            />
-            <ForgotPassword to="/forgot-password">Забыли пароль?</ForgotPassword>
-          </FormGroup>
-
-          <SubmitButton type="submit" disabled={isLoading || !email || !password}>
+          
+          <InputGroup>
+            <Label>Email</Label>
+            <Input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+          </InputGroup>
+          
+          <InputGroup>
+            <Label>Пароль</Label>
+            <Input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+          </InputGroup>
+          
+          <Button type="submit" disabled={isLoading}>
             {isLoading ? 'Вход...' : 'Войти'}
-          </SubmitButton>
-
-          <AuthFooter>
+          </Button>
+          
+          <Footer>
             Нет аккаунта?
-            <AuthLink to="/register">Зарегистрироваться</AuthLink>
-          </AuthFooter>
-        </AuthForm>
-      </AuthCard>
-    </AuthContainer>
-  )
-}
+            <StyledLink to="/register">Зарегистрироваться</StyledLink>
+          </Footer>
+        </Form>
+      </Card>
+    </Container>
+  );
+};
 
-export default Login
+export default Login;

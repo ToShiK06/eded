@@ -12,7 +12,6 @@ export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Регистрация
   const signup = async (email, password, additionalData) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -36,10 +35,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Вход
+  
   const login = async (loginOrEmail, password) => {
     try {
-      // Админ
+      
       if (loginOrEmail === 'admin@admin.da' && password === 'Admin123') {
         const adminUser = {
           uid: 'admin',
@@ -55,7 +54,7 @@ export const AuthProvider = ({ children }) => {
         return { success: true };
       }
 
-      // Обычный пользователь
+      
       let email = loginOrEmail;
       if (!email.includes('@')) {
         email = `${loginOrEmail}@temp.com`;
@@ -87,7 +86,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Выход
+  
   const logout = async () => {
     try {
       if (currentUser?.uid !== 'admin') {

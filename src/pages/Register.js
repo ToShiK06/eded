@@ -127,7 +127,6 @@ const Register = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
 
-  // Функция форматирования телефона
   const formatPhoneNumber = (value) => {
     const numbers = value.replace(/\D/g, '');
     if (numbers.length === 0) return '';
@@ -138,7 +137,6 @@ const Register = () => {
     return `8(${numbers.slice(1, 4)})${numbers.slice(4, 7)}-${numbers.slice(7, 9)}-${numbers.slice(9, 11)}`;
   };
 
-  // Валидация телефона
   const validatePhone = (phone) => {
     const phoneRegex = /^8\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
     return phoneRegex.test(phone);
@@ -147,33 +145,27 @@ const Register = () => {
   const validateForm = () => {
     const newErrors = {};
     
-    // Логин: латиница и цифры, не менее 6 символов
     if (!formData.login) newErrors.login = 'Введите логин';
     else if (!/^[a-zA-Z0-9]{6,}$/.test(formData.login)) 
       newErrors.login = 'Логин: только латиница и цифры, не менее 6 символов';
     
-    // Пароль: минимум 8 символов
     if (!formData.password) newErrors.password = 'Введите пароль';
     else if (formData.password.length < 8) 
       newErrors.password = 'Пароль: минимум 8 символов';
     
-    // Подтверждение пароля
     if (formData.password !== formData.confirmPassword) 
       newErrors.confirmPassword = 'Пароли не совпадают';
     
-    // ФИО: только кириллица и пробелы
     if (!formData.fullName) newErrors.fullName = 'Введите ФИО';
     else if (!/^[а-яА-ЯёЁ\s]+$/.test(formData.fullName)) 
       newErrors.fullName = 'ФИО: только буквы кириллицы и пробелы';
     
-    // Телефон: точное соответствие формату 8(XXX)XXX-XX-XX
     if (!formData.phone) {
       newErrors.phone = 'Введите номер телефона';
     } else if (!validatePhone(formData.phone)) {
       newErrors.phone = 'Неверный формат. Пример: 8(999)123-45-67';
     }
     
-    // Email
     if (!formData.email) newErrors.email = 'Введите email';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) 
       newErrors.email = 'Неверный формат email';
@@ -246,7 +238,6 @@ const Register = () => {
         <Form onSubmit={handleSubmit}>
           {errors.general && <ErrorMessage>{errors.general}</ErrorMessage>}
           
-          {/* Логин */}
           <InputGroup>
             <Label>Логин *</Label>
             <Input 
@@ -262,7 +253,6 @@ const Register = () => {
             <Hint>Только латиница и цифры, минимум 6 символов</Hint>
           </InputGroup>
           
-          {/* Пароль */}
           <InputGroup>
             <Label>Пароль *</Label>
             <Input 
@@ -281,7 +271,6 @@ const Register = () => {
             <Hint>Минимум 8 символов</Hint>
           </InputGroup>
           
-          {/* Подтверждение пароля */}
           <InputGroup>
             <Label>Подтвердите пароль *</Label>
             <Input 
@@ -299,7 +288,6 @@ const Register = () => {
             }
           </InputGroup>
           
-          {/* ФИО */}
           <InputGroup>
             <Label>ФИО *</Label>
             <Input 
@@ -315,7 +303,6 @@ const Register = () => {
             <Hint>Только буквы кириллицы и пробелы</Hint>
           </InputGroup>
           
-          {/* Телефон - с форматированием */}
           <InputGroup>
             <Label>Телефон *</Label>
             <Input 
@@ -334,7 +321,6 @@ const Register = () => {
             <Hint>Формат: 8(XXX)XXX-XX-XX (например, 8(999)123-45-67)</Hint>
           </InputGroup>
           
-          {/* Email */}
           <InputGroup>
             <Label>Email *</Label>
             <Input 

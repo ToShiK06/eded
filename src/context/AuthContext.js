@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (loginOrEmail, password) => {
     try {
       
-      if (loginOrEmail === 'admin@admin.da' && password === 'Admin123') {
+      if (loginOrEmail === 'admin@admin.com' && password === 'KorokNET') {
         const adminUser = {
           uid: 'admin',
           email: 'admin@admin.da',

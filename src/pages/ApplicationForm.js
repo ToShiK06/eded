@@ -1,18 +1,32 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useApplications } from '../context/ApplicationContext';
 import { useAuth } from '../context/AuthContext';
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
 
 const Container = styled.div`
   min-height: 100vh;
   padding: 100px 24px 80px;
   background: #0A0A0A;
+  
+  @media (max-width: 768px) {
+    padding: 80px 16px 60px;
+  }
 `;
 
 const Wrapper = styled.div`
   max-width: 600px;
   margin: 0 auto;
+  animation: ${fadeIn} 0.4s ease;
+  
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `;
 
 const Title = styled.h1`
@@ -20,18 +34,36 @@ const Title = styled.h1`
   font-weight: 600;
   color: #00FF88;
   margin-bottom: 8px;
+  
+  @media (max-width: 768px) {
+    font-size: 28px;
+  }
 `;
 
 const Subtitle = styled.p`
   color: #888888;
   margin-bottom: 40px;
+  
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 const Form = styled.form`
   background: #1A1A1A;
   padding: 40px;
   border: 1px solid #2A2A2A;
-  border-radius: 8px;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: #00FF88;
+    box-shadow: 0 8px 32px rgba(0, 255, 136, 0.1);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 24px;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -54,12 +86,13 @@ const Select = styled.select`
   width: 100%;
   padding: 14px 16px;
   background: #2A2A2A;
-  border: 1px solid #3A3A3A;
+  border: 1px solid ${props => props.$error ? '#FF4444' : '#3A3A3A'};
   border-radius: 8px;
   color: #EDEDED;
   font-size: 15px;
   cursor: pointer;
   appearance: none;
+  transition: all 0.2s;
   
   &:focus {
     outline: none;
@@ -86,6 +119,11 @@ const RadioGroup = styled.div`
   display: flex;
   gap: 24px;
   margin-top: 8px;
+  flex-wrap: wrap;
+  
+  @media (max-width: 480px) {
+    gap: 16px;
+  }
 `;
 
 const RadioLabel = styled.label`
@@ -112,6 +150,7 @@ const DateInput = styled.input`
   color: #EDEDED;
   font-size: 15px;
   cursor: pointer;
+  transition: all 0.2s;
   
   &:focus {
     outline: none;
@@ -135,13 +174,17 @@ const Button = styled.button`
   cursor: pointer;
   border-radius: 8px;
   border: none;
+  transition: all 0.2s;
   
   &:hover {
     background: #00CC6E;
+    transform: translateY(-2px);
   }
+  
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    transform: none;
   }
 `;
 
@@ -153,6 +196,7 @@ const SuccessMessage = styled.div`
   color: #00FF88;
   margin-bottom: 24px;
   border-radius: 8px;
+  animation: ${fadeIn} 0.3s ease;
 `;
 
 const ErrorMessage = styled.div`
@@ -163,6 +207,7 @@ const ErrorMessage = styled.div`
   color: #FF4444;
   margin-bottom: 24px;
   border-radius: 8px;
+  animation: ${fadeIn} 0.3s ease;
 `;
 
 const Hint = styled.div`
@@ -171,8 +216,15 @@ const Hint = styled.div`
   margin-top: 6px;
 `;
 
+// Только 3 курса по заданию
+const coursesList = [
+  'Основы алгоритмизации и программирования',
+  'Основы веб-дизайна',
+  'Основы проектирования баз данных'
+];
+
 const ApplicationForm = () => {
-  const { coursesList, createApplication } = useApplications();
+  const { createApplication } = useApplications();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -196,6 +248,12 @@ const ApplicationForm = () => {
   const maxDateObj = new Date();
   maxDateObj.setMonth(maxDateObj.getMonth() + 2);
   const maxDate = maxDateObj.toISOString().split('T')[0];
+
+  const formatDateForDisplay = (dateStr) => {
+    if (!dateStr) return '';
+    const [year, month, day] = dateStr.split('-');
+    return `${day}.${month}.${year}`;
+  };
 
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
@@ -288,9 +346,10 @@ const ApplicationForm = () => {
               max={maxDate}
               $error={!!dateError}
               required
+              placeholder="ДД.ММ.ГГГГ"
             />
             {dateError && <ErrorMessage>{dateError}</ErrorMessage>}
-            <Hint>Доступный период: с {minDate} по {maxDate}</Hint>
+            <Hint>Формат: ДД.ММ.ГГГГ | Доступно: {formatDateForDisplay(minDate)} — {formatDateForDisplay(maxDate)}</Hint>
           </FormGroup>
           
           <FormGroup>
